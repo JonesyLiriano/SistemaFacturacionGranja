@@ -1,5 +1,7 @@
 {
   "name": "SFacturacionGranja",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

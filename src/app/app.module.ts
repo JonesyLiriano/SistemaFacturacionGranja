@@ -8,18 +8,23 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { SharedModule } from './shared/shared.module';
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import {IonicStorageModule} from '@ionic/storage';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    IonicStorageModule.forRoot(),
+    AppRoutingModule,
+    SharedModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    SQLite,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
