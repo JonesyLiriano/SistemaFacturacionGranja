@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class SqliteDataService {
 
   databaseReady: BehaviorSubject<boolean>;
 
-  constructor(private platform: Platform, private sqlite: SQLite) {
+  constructor(private platform: Platform, private sqlite: SQLite, private toastService: ToastService) {
     this.databaseReady = new BehaviorSubject(false);
     this.platform.ready().then(() => {
       this.createDB();
@@ -114,8 +115,10 @@ export class SqliteDataService {
         return ;
 
     }
-    return this.database.executeSql(sqlText, values).then( res => {
-      return res;
+    return this.database.executeSql(sqlText, values).then( () => {
+      this.toastService.presentSuccessToast('El registro ha sido creado correctamente!');
+    }, () => {
+      this.toastService.presentErrorToast('Ha ocurrido un error!, intentelo de nuevo...');
     });
   }
   public update(tableName, item) {
@@ -134,8 +137,10 @@ export class SqliteDataService {
         return ;
 
     }
-    return this.database.executeSql(sqlText, values).then(res => {
-      return res;
+    return this.database.executeSql(sqlText, values).then(() => {
+      this.toastService.presentSuccessToast('El registro ha sido actualizado correctamente!');
+    }, () => {
+      this.toastService.presentErrorToast('Ha ocurrido un error!, intentelo de nuevo...');
     });
 }
 
@@ -144,8 +149,10 @@ public remove(tableName, item) {
   let values ;
   sqlText = `delete from ${tableName} where id = ?`;
   values = [item.id || null ];
-  return this.database.executeSql(sqlText, values).then(res => {
-    return res;
+  return this.database.executeSql(sqlText, values).then(() => {
+    this.toastService.presentSuccessToast('El registro fue eliminado correctamente!');
+  }, () => {
+    this.toastService.presentErrorToast('Ha ocurrido un error!, intentelo de nuevo...');
   });
 }
 
@@ -155,7 +162,20 @@ public list(tableName) {
   sqlText = `select * from ${tableName}`;
 
   return this.database.executeSql(sqlText, values).then(res => {
-   return res;
+    return res;
+  }, err => {
+    console.log(err, 'ERROR LIST QUERY');
+    return [];
+  });
+}
+
+public condicionalQuery(query) {
+  let sqlText;
+  const values = [];
+  sqlText = query;
+
+  return this.database.executeSql(sqlText, values).then(res => {
+    return res;
   }, err => {
     console.log(err, 'ERROR LIST QUERY');
     return [];

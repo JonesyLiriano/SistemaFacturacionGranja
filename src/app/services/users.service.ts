@@ -26,8 +26,6 @@ export class UsersService {
               password: data.rows.item(i).password,
               level: data.rows.item(i).level});
           }
-            console.log(data.rows.item(0));
-            console.log(users);
             this.users$.next(users);
         }
          });
@@ -37,7 +35,7 @@ export class UsersService {
   }
 
   createUser(user: User) {
-    return this.sqlData.create('users', user);
+    this.sqlData.create('users', user);
   }
 
   updateUser(user: User) {

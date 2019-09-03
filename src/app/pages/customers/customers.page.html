@@ -2,22 +2,36 @@
 <ion-content padding>
     <ion-item>
         <app-filter></app-filter>
-        <ion-button color="tertiary" slot="end"><ion-icon name="person-add"></ion-icon></ion-button>                    
+        <ion-button (click)="presentAddModal()" color="tertiary" slot="end"><ion-icon name="person-add"></ion-icon></ion-button>                    
     </ion-item>  
-<ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-      {{item.note}}
-      </div>
-      <ion-button size="small" color="secondary" (click)="presentUpdateModal()" slot="end">
-          <ion-icon name="create"></ion-icon> 
-      </ion-button>
-                           
-      <ion-button class="ion-no-margin" (click)="deleteCustomer()" size="small" color="danger" slot="end">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button> 
-    </ion-item>
-  </ion-list>
-</ion-content>
+    <div>
+            <ion-virtual-scroll [items]="customers" approxItemHeight="320px">
+              <ion-item-divider *virtualItem="let customer">
+                <ion-icon name="contact" slot="start"></ion-icon>
+                {{ customer.id }}
+                <div class="item-note" slot="end">
+                  {{ customer.name }}
+                </div>
+                <ion-button
+                  size="small"
+                  color="secondary"
+                  (click)="presentUpdateModal(customer)"
+                  slot="end"
+                >
+                  <ion-icon name="create"></ion-icon>
+                </ion-button>
+        
+                <ion-button
+                  class="ion-no-margin"
+                  (click)="deleteCustomer(customer)"
+                  size="small"
+                  color="danger"
+                  slot="end"
+                >
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-item-divider>
+            </ion-virtual-scroll>
+          </div>
+        </ion-content>
+        

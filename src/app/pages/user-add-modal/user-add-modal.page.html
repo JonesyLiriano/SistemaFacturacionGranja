@@ -1,6 +1,6 @@
 <ion-header translucent>
     <ion-toolbar>
-      <ion-title>Informacion del Usuario</ion-title>
+      <ion-title>Agregar Usuario</ion-title>
       <ion-buttons slot="end">
         <ion-button color="medium" fill="outline" (click)="dismissModal()">Cerrar</ion-button>
       </ion-buttons>
@@ -11,11 +11,15 @@
         <ion-grid>
           <ion-row justify-content-center padding>
             <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">              
-              <div text-center>      
-                <h4>{{user.id}}</h4>          
-                <h3>{{user.username | uppercase}}</h3>
+              <div text-center>                        
+                <h3>Favor completar los datos</h3>
               </div>
-              <div padding>                
+              <div padding>  
+                  <ion-item>
+                      <ion-input #username name="username" [type]="'text'" placeholder="Nombre de usuario" clearInput [(ngModel)]="user.username" required></ion-input>
+                      <ion-icon name="person" slot="start"></ion-icon>
+                      
+                    </ion-item>              
                 <ion-item>
                   <ion-input #password name="password" [type]="showPassword? 'text' : 'password'" placeholder="Password" clearInput [(ngModel)]="user.password" required></ion-input>
                   <ion-icon name="lock" slot="start"></ion-icon>

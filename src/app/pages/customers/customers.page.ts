@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { CustomerUpdateReadModalPage } from '../customer-update-read-modal/customer-update-read-modal.page';
+import { Customer } from 'src/app/models/customer';
+import { CustomersService } from 'src/app/services/customers.service';
+import { CustomerAddPage } from '../customer-add/customer-add.page';
 
 @Component({
   selector: 'app-customers',
@@ -8,23 +11,23 @@ import { CustomerUpdateReadModalPage } from '../customer-update-read-modal/custo
   styleUrls: ['./customers.page.scss'],
 })
 export class CustomersPage implements OnInit {
-  private icons = [
-    'contact'
-  ];
-  public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor(private alertController: AlertController, private modalController: ModalController) {
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
-  }
+  customer: Customer;
+  customers: Customer[];
+
+  constructor(private modalController: ModalController, private alertController: AlertController,
+              private customerService: CustomersService) {}
+
   ngOnInit() {
+    this.loadCustomers();
   }
 
-  async deleteCustomer() {
+  loadCustomers() {
+   this.customerService.getCustomers().subscribe(data => {
+    this.customers = data;
+   });
+  }
+
+  async deleteCustomer(customer: Customer) {
     const alert = await this.alertController.create({
       header: 'Confirmacion!',
       message: 'Esta seguro que desea <strong>eliminar</strong> este cliente?',
@@ -32,14 +35,11 @@ export class CustomersPage implements OnInit {
         {
           text: 'Cancelar',
           role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel: blah');
-          }
+          cssClass: 'secondary'
         }, {
           text: 'Eliminar',
           handler: () => {
-            console.log('Confirm Okay');
+            this.customerService.deleteCustomer(customer);
           }
         }
       ]
@@ -48,10 +48,18 @@ export class CustomersPage implements OnInit {
     await alert.present();
   }
 
-  async presentUpdateModal() {
+  async presentUpdateModal(customer: Customer) {
     const modal = await this.modalController.create({
     component: CustomerUpdateReadModalPage,
-    componentProps: { value: 123 }
+    componentProps: { customer }
+  });
+
+    await modal.present();
+  }
+
+  async presentAddModal() {
+    const modal = await this.modalController.create({
+    component: CustomerAddPage
   });
 
     await modal.present();

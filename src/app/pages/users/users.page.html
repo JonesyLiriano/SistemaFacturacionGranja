@@ -2,7 +2,7 @@
 <ion-content padding>
   <ion-item>
     <app-filter></app-filter>
-    <ion-button color="tertiary" slot="end">
+    <ion-button (click)="presentAddModal()" color="tertiary" slot="end" size="small">
       <ion-icon name="person-add"></ion-icon>
     </ion-button>
   </ion-item>

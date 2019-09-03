@@ -5,7 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { InvoiceDetailsModalPage } from './invoice-details-modal.page';
+import { UserAddModalPage } from './user-add-modal.page';
+
 
 
 @NgModule({
@@ -14,6 +15,6 @@ import { InvoiceDetailsModalPage } from './invoice-details-modal.page';
     FormsModule,
     IonicModule
   ],
-  declarations: [InvoiceDetailsModalPage]
+  declarations: [UserAddModalPage]
 })
-export class InvoiceDetailsModalPageModule {}
+export class UserAddModalPageModule {}

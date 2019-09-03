@@ -1,16 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/app/models/customer';
+import { ModalController, AlertController } from '@ionic/angular';
 import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
-  selector: 'app-customer-update-read-modal',
-  templateUrl: './customer-update-read-modal.page.html',
-  styleUrls: ['./customer-update-read-modal.page.scss'],
+  selector: 'app-customer-add-modal',
+  templateUrl: './customer-add-modal.page.html',
+  styleUrls: ['./customer-add-modal.page.scss'],
 })
-export class CustomerUpdateReadModalPage implements OnInit {
-  @Input() customer: Customer;
-
+export class CustomerAddModalPage implements OnInit {
+  customer: Customer;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
               private customerService: CustomersService) { }
@@ -21,7 +20,7 @@ export class CustomerUpdateReadModalPage implements OnInit {
   async onClickSubmit() {
     const alert = await this.alertController.create({
         header: 'Confirmacion!',
-        message: 'Esta seguro que desea aplicar los <strong>cambios</strong>?',
+        message: 'Esta seguro que desea agregar a este <strong>cliente</strong>?',
         buttons: [
           {
             text: 'Cancelar',
@@ -30,7 +29,7 @@ export class CustomerUpdateReadModalPage implements OnInit {
           }, {
             text: 'Aceptar',
             handler: () => {
-             this.customerService.updateCustomer(this.customer);
+             this.customerService.createCustomer(this.customer);
              this.dismissModal();
             }
           }
@@ -44,5 +43,6 @@ export class CustomerUpdateReadModalPage implements OnInit {
       this.modalController.dismiss().then(() => { this.modalController = null; });
     }
 }
+
 
 }

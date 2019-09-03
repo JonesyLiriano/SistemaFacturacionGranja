@@ -1,27 +1,30 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
+import { ModalController, AlertController } from '@ionic/angular';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
-  selector: 'app-user-update-read-modal',
-  templateUrl: './user-update-read-modal.page.html',
-  styleUrls: ['./user-update-read-modal.page.scss'],
+  selector: 'app-user-add-modal',
+  templateUrl: './user-add-modal.page.html',
+  styleUrls: ['./user-add-modal.page.scss'],
 })
-export class UserUpdateReadModalPage implements OnInit {
-  @Input() user: User;
+export class UserAddModalPage implements OnInit {
+  user: User;
   showPassword = false;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
-              private userService: UsersService) { }
+              private userService: UsersService) {
+                console.log('modal');
+              }
 
   ngOnInit() {
+
   }
 
   async onClickSubmit() {
     const alert = await this.alertController.create({
         header: 'Confirmacion!',
-        message: 'Esta seguro que desea aplicar los <strong>cambios</strong>?',
+        message: 'Esta seguro que desea agregar a este <strong>usuario</strong>?',
         buttons: [
           {
             text: 'Cancelar',
@@ -30,7 +33,7 @@ export class UserUpdateReadModalPage implements OnInit {
           }, {
             text: 'Aceptar',
             handler: () => {
-             this.userService.updateUser(this.user);
+             this.userService.createUser(this.user);
              this.dismissModal();
             }
           }
@@ -44,5 +47,6 @@ export class UserUpdateReadModalPage implements OnInit {
       this.modalController.dismiss().then(() => { this.modalController = null; });
     }
 }
+
 
 }

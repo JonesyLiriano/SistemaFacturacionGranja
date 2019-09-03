@@ -3,23 +3,30 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
     path: 'billing',
     loadChildren: () => import('./pages/billing/billing.module').then(m => m.BillingPageModule)
   },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
-  { path: 'customers', loadChildren: './pages/customers/customers.module#CustomersPageModule' },
-  { path: 'invoices', loadChildren: './pages/invoices/invoices.module#InvoicesPageModule' },
-  { path: 'invoice-details', loadChildren: './pages/invoice-details/invoice-details.module#InvoiceDetailsPageModule' },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: 'customers',
+    loadChildren: () => import('./pages/customers/customers.module').then(m => m.CustomersPageModule)
+  },
+  {
+    path: 'invoices',
+    loadChildren: () => import('./pages/invoices/invoices.module').then(m => m.InvoicesPageModule)},
+
   {
     path: 'users',
-    loadChildren: () => import('./pages/users/users.module').then(m => m.UsersPageModule )
+    loadChildren: () => import('./pages/users/users.module').then(m => m.UsersPageModule)
   },
-  { path: 'billing', loadChildren: './pages/billing/billing.module#BillingPageModule' }
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
