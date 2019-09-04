@@ -9,11 +9,15 @@ import { UsersPage } from './users.page';
 import { SharedModule } from '../../shared/shared.module';
 import { UserUpdateReadModalPageModule} from '../user-update-read-modal/user-update-read-modal.module';
 import { UserUpdateReadModalPage } from '../user-update-read-modal/user-update-read-modal.page';
-
+import { UserAddModalPageModule } from '../user-add-modal/user-add-modal.module';
+import { UserAddModalPage } from '../user-add-modal/user-add-modal.page';
+import { SearchUsersPipe } from '../../pipes/search-users.pipe';
+import { AuthAdminGuard } from 'src/app/shared/guards/auth-admin.guard';
 const routes: Routes = [
   {
     path: '',
-    component: UsersPage
+    component: UsersPage,
+    canActivate: [AuthAdminGuard]
   }
 ];
 
@@ -24,9 +28,10 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes),
     SharedModule,
-    UserUpdateReadModalPageModule
+    UserUpdateReadModalPageModule,
+    UserAddModalPageModule
   ],
-  entryComponents: [UserUpdateReadModalPage],
-  declarations: [UsersPage]
+  entryComponents: [UserUpdateReadModalPage, UserAddModalPage],
+  declarations: [UsersPage, SearchUsersPipe]
 })
 export class UsersPageModule {}

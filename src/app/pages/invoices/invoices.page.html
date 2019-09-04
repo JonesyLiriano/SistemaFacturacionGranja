@@ -1,11 +1,11 @@
 <app-toolbar [title]="'Facturas'"></app-toolbar>
 <ion-content padding>
     <ion-item>
-        <app-filter></app-filter>
+        <app-filter (filter)="onFilter($event)"></app-filter>
         <ion-button color="tertiary" slot="end"><ion-icon name="add"></ion-icon></ion-button>                    
     </ion-item>  
     <div>
-            <ion-virtual-scroll [items]="invoices" approxItemHeight="320px">
+            <ion-virtual-scroll [items]="invoices | searchInvoices : search" approxItemHeight="320px">
               <ion-item-divider *virtualItem="let invoice">
                 <ion-icon name="paper" slot="start"></ion-icon>
                 {{ invoice.id }}

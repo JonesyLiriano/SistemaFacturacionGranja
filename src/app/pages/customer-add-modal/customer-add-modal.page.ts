@@ -10,11 +10,17 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CustomerAddModalPage implements OnInit {
   customer: Customer;
-
+  refreshView = false;
   constructor(private modalController: ModalController, private alertController: AlertController,
               private customerService: CustomersService) { }
 
   ngOnInit() {
+    this.customer = {
+      id: null,
+      name: '',
+      address: '',
+      phone: ''
+    };
   }
 
   async onClickSubmit() {
@@ -30,6 +36,7 @@ export class CustomerAddModalPage implements OnInit {
             text: 'Aceptar',
             handler: () => {
              this.customerService.createCustomer(this.customer);
+             this.refreshView = true;
              this.dismissModal();
             }
           }
@@ -40,9 +47,9 @@ export class CustomerAddModalPage implements OnInit {
 
   dismissModal() {
     if (this.modalController) {
-      this.modalController.dismiss().then(() => { this.modalController = null; });
+      this.modalController.dismiss({
+        refreshView: this.refreshView
+      }).then(() => { this.modalController = null; });
     }
 }
-
-
 }

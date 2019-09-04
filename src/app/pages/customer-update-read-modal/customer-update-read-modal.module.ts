@@ -13,6 +13,7 @@ import { CustomerUpdateReadModalPage } from './customer-update-read-modal.page';
     FormsModule,
     IonicModule
   ],
-  declarations: [CustomerUpdateReadModalPage]
+  declarations: [CustomerUpdateReadModalPage],
+  exports : [CustomerUpdateReadModalPage]
 })
 export class CustomerUpdateReadModalPageModule {}

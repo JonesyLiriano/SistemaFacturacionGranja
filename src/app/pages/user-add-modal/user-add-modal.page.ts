@@ -11,15 +11,20 @@ import { UsersService } from 'src/app/services/users.service';
 export class UserAddModalPage implements OnInit {
   user: User;
   showPassword = false;
+  refreshView = false;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
               private userService: UsersService) {
-                console.log('modal');
               }
 
   ngOnInit() {
-
-  }
+    this.user = {
+      id: null  ,
+      username: '',
+      password: '',
+      level: 'user'
+    };
+   }
 
   async onClickSubmit() {
     const alert = await this.alertController.create({
@@ -34,6 +39,7 @@ export class UserAddModalPage implements OnInit {
             text: 'Aceptar',
             handler: () => {
              this.userService.createUser(this.user);
+             this.refreshView = true;
              this.dismissModal();
             }
           }
@@ -44,8 +50,14 @@ export class UserAddModalPage implements OnInit {
 
   dismissModal() {
     if (this.modalController) {
-      this.modalController.dismiss().then(() => { this.modalController = null; });
+      this.modalController.dismiss({
+        refreshView: this.refreshView
+      }).then(() => { this.modalController = null; });
     }
+}
+
+onChange(selectValue) {
+  this.user.level = selectValue;
 }
 
 

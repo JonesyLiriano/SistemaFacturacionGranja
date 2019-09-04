@@ -14,6 +14,7 @@ import { InvoiceDetailsModalPage } from './invoice-details-modal.page';
     FormsModule,
     IonicModule
   ],
-  declarations: [InvoiceDetailsModalPage]
+  declarations: [InvoiceDetailsModalPage],
+  exports: [InvoiceDetailsModalPage]
 })
 export class InvoiceDetailsModalPageModule {}

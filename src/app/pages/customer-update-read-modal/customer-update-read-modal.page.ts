@@ -10,6 +10,7 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CustomerUpdateReadModalPage implements OnInit {
   @Input() customer: Customer;
+  @Input() userLevel: string;
 
 
   constructor(private modalController: ModalController, private alertController: AlertController,

@@ -14,6 +14,7 @@ import { CustomerAddModalPage } from './customer-add-modal.page';
     FormsModule,
     IonicModule
   ],
-  declarations: [CustomerAddModalPage]
+  declarations: [CustomerAddModalPage],
+  exports: [CustomerAddModalPage]
 })
 export class CustomerAddModalPageModule {}

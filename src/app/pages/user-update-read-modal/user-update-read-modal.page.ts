@@ -30,8 +30,8 @@ export class UserUpdateReadModalPage implements OnInit {
           }, {
             text: 'Aceptar',
             handler: () => {
-             this.userService.updateUser(this.user);
-             this.dismissModal();
+              this.userService.updateUser(this.user);
+              this.dismissModal();
             }
           }
         ]
@@ -43,6 +43,10 @@ export class UserUpdateReadModalPage implements OnInit {
     if (this.modalController) {
       this.modalController.dismiss().then(() => { this.modalController = null; });
     }
-}
+  }
+    onChange(selectValue) {
+      this.user.level = selectValue;
+    }
+
 
 }

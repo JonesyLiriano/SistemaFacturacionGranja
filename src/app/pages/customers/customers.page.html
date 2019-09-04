@@ -1,11 +1,11 @@
 <app-toolbar [title]="'Clientes'"></app-toolbar>
 <ion-content padding>
     <ion-item>
-        <app-filter></app-filter>
-        <ion-button (click)="presentAddModal()" color="tertiary" slot="end"><ion-icon name="person-add"></ion-icon></ion-button>                    
+        <app-filter (filter)="onFilter($event)"></app-filter>
+        <ion-button (click)="presentAddModal()" color="tertiary" slot="end" size="small" [disabled]="userLevel != 'admin'"><ion-icon name="person-add"></ion-icon></ion-button>                    
     </ion-item>  
     <div>
-            <ion-virtual-scroll [items]="customers" approxItemHeight="320px">
+            <ion-virtual-scroll [items]="customers | searchCustomers : search" approxItemHeight="320px">
               <ion-item-divider *virtualItem="let customer">
                 <ion-icon name="contact" slot="start"></ion-icon>
                 {{ customer.id }}
@@ -18,7 +18,7 @@
                   (click)="presentUpdateModal(customer)"
                   slot="end"
                 >
-                  <ion-icon name="create"></ion-icon>
+                  <ion-icon [name]="userLevel == 'admin'? 'create' : 'eye'"></ion-icon>
                 </ion-button>
         
                 <ion-button
@@ -27,6 +27,7 @@
                   size="small"
                   color="danger"
                   slot="end"
+                  [disabled]="userLevel != 'admin'"
                 >
                   <ion-icon name="trash"></ion-icon>
                 </ion-button>

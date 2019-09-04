@@ -21,10 +21,10 @@
                   <ion-icon name="lock" slot="start"></ion-icon>
                   <ion-icon *ngIf="password.value" [name]="showPassword? 'eye-off' : 'eye'" slot="end" (click)="showPassword = !showPassword"></ion-icon>
                 </ion-item>
-                <ion-item>                  
-                    <ion-select placeholder="Seleccione" [(ngModel)]="user.level">
-                        <ion-select-option value="user">Usuario</ion-select-option>
-                        <ion-select-option value="admin">Administrador</ion-select-option>
+                <ion-item>                 
+                    <ion-select #S placeholder="Seleccione" slot="end" (ionChange)="onChange(S.value)">
+                        <ion-select-option value="user" [selected]="user.level === 'user'">Usuario</ion-select-option>
+                        <ion-select-option value="admin" [selected]="user.level === 'admin'">Administrador</ion-select-option>
                       </ion-select>
                     <ion-icon name="key" slot="start"></ion-icon>
                   </ion-item>

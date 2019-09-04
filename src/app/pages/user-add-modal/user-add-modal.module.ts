@@ -15,6 +15,7 @@ import { UserAddModalPage } from './user-add-modal.page';
     FormsModule,
     IonicModule
   ],
-  declarations: [UserAddModalPage]
+  declarations: [UserAddModalPage],
+  exports: [UserAddModalPage]
 })
 export class UserAddModalPageModule {}

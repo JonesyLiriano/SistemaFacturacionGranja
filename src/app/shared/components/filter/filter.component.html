@@ -1,1 +1,1 @@
-<ion-input type="text" placeholder="Buscar" clear></ion-input>
+<ion-input type="text"  placeholder="Buscar" [ngModel]="search" (ngModelChange)="onModelChange($event)" clear></ion-input>

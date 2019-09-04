@@ -12,6 +12,7 @@ import { InvoicesService } from 'src/app/services/invoices.service';
 export class InvoicesPage implements OnInit {
   invoice: Invoice;
   invoices: Invoice[];
+  search;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
               private invoiceService: InvoicesService) {}
@@ -35,4 +36,8 @@ export class InvoicesPage implements OnInit {
     await modal.present();
   }
   printInvoice(invoice) {}
+
+  onFilter(search: string) {
+    this.search = search;
+}
 }

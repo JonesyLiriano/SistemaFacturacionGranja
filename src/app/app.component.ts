@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   public appPages = [
     {
       title: 'Home',
-      url: '/home',
+      url: '/billing',
       icon: 'home'
     },
     {
@@ -39,21 +39,16 @@ export class AppComponent implements OnInit {
     }
 
   ];
-  public activeNav = true;
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private loginService: LoginService
+    private statusBar: StatusBar
   ) {
     this.initializeApp();
   }
 
   ngOnInit() {
-    this.loginService.activeNav$.subscribe(show => {
-      this.activeNav = show;
-  });
   }
 
   initializeApp() {

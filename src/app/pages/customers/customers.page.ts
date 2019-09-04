@@ -3,7 +3,8 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { CustomerUpdateReadModalPage } from '../customer-update-read-modal/customer-update-read-modal.page';
 import { Customer } from 'src/app/models/customer';
 import { CustomersService } from 'src/app/services/customers.service';
-import { CustomerAddPage } from '../customer-add/customer-add.page';
+import { CustomerAddModalPage } from '../customer-add-modal/customer-add-modal.page';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-customers',
@@ -13,12 +14,17 @@ import { CustomerAddPage } from '../customer-add/customer-add.page';
 export class CustomersPage implements OnInit {
   customer: Customer;
   customers: Customer[];
+  search;
+  userLevel: string;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
-              private customerService: CustomersService) {}
+              private customerService: CustomersService, private storage: Storage) {}
 
   ngOnInit() {
     this.loadCustomers();
+    this.storage.get('level').then(data => {
+      this.userLevel = data;
+    });
   }
 
   loadCustomers() {
@@ -51,7 +57,8 @@ export class CustomersPage implements OnInit {
   async presentUpdateModal(customer: Customer) {
     const modal = await this.modalController.create({
     component: CustomerUpdateReadModalPage,
-    componentProps: { customer }
+    componentProps: { customer,
+                      userLevel: this.userLevel }
   });
 
     await modal.present();
@@ -59,10 +66,19 @@ export class CustomersPage implements OnInit {
 
   async presentAddModal() {
     const modal = await this.modalController.create({
-    component: CustomerAddPage
+    component: CustomerAddModalPage
   });
 
     await modal.present();
+    const refreshView = await modal.onDidDismiss();
+    if (refreshView) {
+      this.loadCustomers();
+    }
+
   }
+
+  onFilter(search: string) {
+    this.search = search;
+}
 
 }

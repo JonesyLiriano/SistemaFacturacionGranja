@@ -7,11 +7,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 
 import { InvoicesPage } from './invoices.page';
+import { InvoiceDetailsModalPage } from '../invoice-details-modal/invoice-details-modal.page';
+import { InvoiceDetailsModalPageModule } from '../invoice-details-modal/invoice-details-modal.module';
+import { SearchInvoicesPipe } from 'src/app/pipes/search-invoices.pipe';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: InvoicesPage
+    component: InvoicesPage,
+    canActivate: [AuthGuard]
   }
 ];
 
@@ -21,8 +26,10 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
+    InvoiceDetailsModalPageModule
   ],
-  declarations: [InvoicesPage]
+  entryComponents: [InvoiceDetailsModalPage],
+  declarations: [InvoicesPage, SearchInvoicesPipe]
 })
 export class InvoicesPageModule {}

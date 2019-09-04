@@ -13,6 +13,7 @@ import { UserAddModalPage } from '../user-add-modal/user-add-modal.page';
 export class UsersPage implements OnInit {
   user: User;
   users: User[];
+  search: string;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
               private userService: UsersService) {}
@@ -58,12 +59,17 @@ export class UsersPage implements OnInit {
   }
 
   async presentAddModal() {
-    console.log('addmodal');
     const modal = await this.modalController.create({
     component: UserAddModalPage
   });
 
     await modal.present();
+    const refreshView = await modal.onDidDismiss();
+    if (refreshView) {
+      this.loadUsers();
+    }
   }
-
+  onFilter(search: string) {
+    this.search = search;
+}
 }

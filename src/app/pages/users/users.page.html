@@ -1,13 +1,19 @@
 <app-toolbar [title]="'Usuarios'"></app-toolbar>
 <ion-content padding>
   <ion-item>
-    <app-filter></app-filter>
-    <ion-button (click)="presentAddModal()" color="tertiary" slot="end" size="small">
-      <ion-icon name="person-add"></ion-icon>
-    </ion-button>
+    <app-filter (filter)="onFilter($event)"></app-filter>
+    <ion-button
+          class="ion-no-margin"
+          (click)="presentAddModal()"
+          size="small"
+          color="tertiary"
+          slot="end"
+        >
+          <ion-icon name="person-add"></ion-icon>
+        </ion-button>
   </ion-item>
   <div>
-    <ion-virtual-scroll [items]="users" approxItemHeight="320px">
+    <ion-virtual-scroll [items]="users | searchUsers : search" approxItemHeight="320px">
       <ion-item-divider *virtualItem="let user">
         <ion-icon name="person" slot="start"></ion-icon>
         {{ user.id }}

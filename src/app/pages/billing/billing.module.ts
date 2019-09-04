@@ -7,11 +7,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 
 import { BillingPage } from './billing.page';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: BillingPage
+    component: BillingPage,
+    canActivate: [AuthGuard]
   }
 ];
 

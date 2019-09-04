@@ -169,9 +169,8 @@ public list(tableName) {
   });
 }
 
-public condicionalQuery(query) {
+public condicionalQuery(query, values) {
   let sqlText;
-  const values = [];
   sqlText = query;
 
   return this.database.executeSql(sqlText, values).then(res => {

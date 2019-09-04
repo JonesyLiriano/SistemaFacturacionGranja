@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {IonicStorageModule} from '@ionic/storage';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
