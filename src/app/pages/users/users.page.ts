@@ -41,6 +41,7 @@ export class UsersPage implements OnInit {
           text: 'Eliminar',
           handler: () => {
             this.userService.deleteUser(user);
+            this.loadUsers();
           }
         }
       ]
@@ -71,5 +72,8 @@ export class UsersPage implements OnInit {
   }
   onFilter(search: string) {
     this.search = search;
+}
+trackByFn(index, item) {
+  return item ? item.id : index;
 }
 }

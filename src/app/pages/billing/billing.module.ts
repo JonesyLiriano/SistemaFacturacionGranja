@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { BillingPage } from './billing.page';
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
+import { CurrencyChangePipe } from '../../pipes/currency-change.pipe';
 
 const routes: Routes = [
   {
@@ -25,6 +26,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     SharedModule
   ],
-  declarations: [BillingPage]
+  declarations: [BillingPage, CurrencyChangePipe]
 })
 export class BillingPageModule {}

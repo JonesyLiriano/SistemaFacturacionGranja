@@ -16,18 +16,22 @@
               </div>
               <div padding>  
                   <ion-item>
-                      <ion-input #username name="username" [type]="'text'" placeholder="Nombre de usuario" clearInput [ngModel]="user.username | titlecase" 
-                      (ngModelChange)="user.username=$event" required></ion-input>
-                      <ion-icon name="person" slot="start"></ion-icon>
                       
+                  <ion-label position="floating">Usuario <ion-text color="danger">*</ion-text></ion-label>
+                      <ion-input #username name="username" [type]="'text'" clearInput [ngModel]="user.username" 
+                      (ngModelChange)="user.username=$event" autocapitalize="on" required></ion-input>
+                      <ion-icon name="person" slot="start"></ion-icon>                      
                     </ion-item>              
                 <ion-item>
-                  <ion-input #password name="password" [type]="showPassword? 'text' : 'password'" placeholder="Password" clearInput [(ngModel)]="user.password" required></ion-input>
+                  
+                    <ion-label position="floating">Password <ion-text color="danger">*</ion-text></ion-label>
+                  <ion-input #password name="password" [type]="showPassword? 'text' : 'password'" clearInput [(ngModel)]="user.password" required></ion-input>
                   <ion-icon name="lock" slot="start"></ion-icon>
                   <ion-icon *ngIf="password.value" [name]="showPassword? 'eye-off' : 'eye'" slot="end" (click)="showPassword = !showPassword"></ion-icon>
                 </ion-item>
-                <ion-item>                  
-                    <ion-select #S placeholder="Seleccione level" slot="end" (ionChange)=onChange(S.value)>
+                <ion-item>
+                    <ion-label>Nivel</ion-label>                  
+                    <ion-select #S placeholder="Seleccione nivel" slot="end" (ionChange)=onChange(S.value)>
                         <ion-select-option value='user' selected="true">Usuario</ion-select-option>
                         <ion-select-option value='admin'>Administrador</ion-select-option>
                       </ion-select>

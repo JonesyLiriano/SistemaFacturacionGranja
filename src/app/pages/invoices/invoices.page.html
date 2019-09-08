@@ -1,39 +1,33 @@
 <app-toolbar [title]="'Facturas'"></app-toolbar>
 <ion-content padding>
-    <ion-item>
-        <app-filter (filter)="onFilter($event)"></app-filter>
-        <ion-button color="tertiary" slot="end"><ion-icon name="add"></ion-icon></ion-button>                    
-    </ion-item>  
-    <div>
-            <ion-virtual-scroll [items]="invoices | searchInvoices : search" approxItemHeight="320px">
-              <ion-item-divider *virtualItem="let invoice">
-                <ion-icon name="paper" slot="start"></ion-icon>
-                {{ invoice.id }}
-                <div class="item-note" slot="end">
-                  {{ invoice.customer }}
-                </div>
-                <div class="item-note" slot="end">
-                    {{ invoice.pricePounds }}
-                  </div>
-                <ion-button
-                  size="small"
-                  color="secondary"
-                  (click)="presentReadModal(invoice)"
-                  slot="end"
-                >
-                  <ion-icon name="eye"></ion-icon>
-                </ion-button>    
-                <ion-button
-                  class="ion-no-margin"
-                  (click)="printInvoice(invoice)"
-                  size="small"
-                  color="primary"
-                  slot="end"
-                >
-                  <ion-icon name="print"></ion-icon>
-                </ion-button>            
-              </ion-item-divider>
-            </ion-virtual-scroll>
+  <ion-item>
+    <app-filter (filter)="onFilter($event)"></app-filter>
+    <ion-button color="tertiary" slot="end">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <div>
+    <ion-virtual-scroll [items]="invoices | searchInvoices : search" [trackBy]="trackByFn" approxItemHeight="320px">
+      <ion-item-sliding *virtualItem="let invoice">
+        <ion-item>
+          <ion-icon name="paper" slot="start"></ion-icon>
+          {{ invoice.id }}
+          <div class="item-note" slot="end">
+            {{ invoice.customer }}
           </div>
-        </ion-content>
-        
+          <div class="item-note" slot="end">
+            {{ invoice.pricePounds }}
+          </div>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option (click)="presentReadModal(invoice)" color="success">
+            <ion-icon slot="icon-only" name="eye"></ion-icon>
+          </ion-item-option>
+          <ion-item-option (click)="printInvoice(invoice)" color="medium">
+            <ion-icon slot="icon-only" name="print"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-virtual-scroll>
+  </div>
+</ion-content>

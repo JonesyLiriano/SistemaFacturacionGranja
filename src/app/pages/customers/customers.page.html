@@ -1,38 +1,30 @@
 <app-toolbar [title]="'Clientes'"></app-toolbar>
 <ion-content padding>
-    <ion-item>
-        <app-filter (filter)="onFilter($event)"></app-filter>
-        <ion-button (click)="presentAddModal()" color="tertiary" slot="end" size="small" [disabled]="userLevel != 'admin'"><ion-icon name="person-add"></ion-icon></ion-button>                    
-    </ion-item>  
-    <div>
-            <ion-virtual-scroll [items]="customers | searchCustomers : search" approxItemHeight="320px">
-              <ion-item-divider *virtualItem="let customer">
-                <ion-icon name="contact" slot="start"></ion-icon>
-                {{ customer.id }}
-                <div class="item-note" slot="end">
-                  {{ customer.name }}
-                </div>
-                <ion-button
-                  size="small"
-                  color="secondary"
-                  (click)="presentUpdateModal(customer)"
-                  slot="end"
-                >
-                  <ion-icon [name]="userLevel == 'admin'? 'create' : 'eye'"></ion-icon>
-                </ion-button>
-        
-                <ion-button
-                  class="ion-no-margin"
-                  (click)="deleteCustomer(customer)"
-                  size="small"
-                  color="danger"
-                  slot="end"
-                  [disabled]="userLevel != 'admin'"
-                >
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-              </ion-item-divider>
-            </ion-virtual-scroll>
+  <ion-item>
+    <app-filter (filter)="onFilter($event)"></app-filter>
+    <ion-button (click)="presentAddModal()" color="tertiary" slot="end" size="small" [disabled]="userLevel != 'admin'">
+      <ion-icon name="person-add"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <div>
+    <ion-virtual-scroll [items]="customers | searchCustomers : search" [trackBy]="trackByFn" approxItemHeight="320px">
+      <ion-item-sliding *virtualItem="let customer">
+        <ion-item>
+          <ion-icon name="contact" slot="start"></ion-icon>
+          {{ customer.id }}
+          <div class="item-note" slot="end">
+            {{ customer.name }}
           </div>
-        </ion-content>
-        
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option (click)="presentUpdateModal(customer)" color="primary">
+            <ion-icon slot="icon-only" [name]="userLevel == 'admin'? 'create' : 'eye'"></ion-icon>
+          </ion-item-option>
+          <ion-item-option (click)="deleteCustomer(customer)" color="danger" [disabled]="userLevel != 'admin'">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-virtual-scroll>
+  </div>
+</ion-content>

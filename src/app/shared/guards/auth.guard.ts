@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Promise<boolean> {
     // tslint:disable-next-line: no-shadowed-variable;
-
     return this.checkLogin();
   }
   // tslint:disable-next-line: no-shadowed-variable

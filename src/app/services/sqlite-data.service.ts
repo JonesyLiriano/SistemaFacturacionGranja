@@ -43,7 +43,7 @@ export class SqliteDataService {
         FOREIGN KEY(invoice) REFERENCES invoices(id))`;
 
   readonly insertAdminUser = `INSERT OR IGNORE INTO users (username, password, level)
-        VALUES ('admin', 'admin', 'admin')`;
+        VALUES ('Admin', 'admin', 'admin')`;
 
   databaseReady: BehaviorSubject<boolean>;
 
