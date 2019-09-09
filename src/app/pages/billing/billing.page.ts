@@ -3,6 +3,8 @@ import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
 import { AlertController } from '@ionic/angular';
+import { InvoicesService } from 'src/app/services/invoices.service';
+import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
   selector: 'app-billing',
@@ -19,7 +21,9 @@ export class BillingPage implements OnInit {
   average: number;
   lotProduct: number;
   pricePounds: number;
-  constructor(private alertController: AlertController) {
+  lastInvoiceID: number;
+  constructor(private alertController: AlertController, private invoiceService: InvoicesService,
+              private customerService: CustomersService) {
   }
 
   ngOnInit() {
@@ -33,6 +37,7 @@ export class BillingPage implements OnInit {
       date: null,
       user: null
     };
+    this.getCustomers();
   }
 
   async deleteLine(index) {
@@ -105,9 +110,11 @@ export class BillingPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary'
         }, {
-          text: 'Okay',
+          text: 'Aceptar',
           handler: () => {
            this.complete();
+           this.clearScreen();
+           this.printInvoice();
           }
         }
       ]
@@ -116,7 +123,39 @@ export class BillingPage implements OnInit {
     await alert.present();
   }
 
-  complete() {}
+  getCustomers() {
+   this.customerService.getCustomers().subscribe(data => {
+    this.customers = data;
+   });
+  }
+
+  clearScreen() {
+    this.lastInvoiceID = null;
+    this.invoice = null;
+    this.lineDetails = null;
+  }
+
+  printInvoice() {
+    console.log('print');
+  }
+
+  complete() {
+    this.createInvoice();
+    this.createInvoiceDetails();
+  }
+
+  createInvoice() {
+    this.invoiceService.createInvoice(this.invoice);
+    this.lastInvoiceID = this.invoiceService.getLastInvoiceID();
+  }
+
+  createInvoiceDetails() {
+    this.lineDetails.forEach(element => {
+      element.invoice = this.lastInvoiceID;
+      this.invoiceService.createInvoiceDetails(element);
+    });
+
+  }
 
   setResult() {
     this.totalGross = 0;

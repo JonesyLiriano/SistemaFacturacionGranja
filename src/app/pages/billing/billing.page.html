@@ -117,7 +117,7 @@
                 </ion-card>
             </ion-row>
             <ion-row justify-content-center padding class="padding-top0">                
-                    <ion-button (click)="presentAlertConfirm()" disabled="form.isInvalid">
+                    <ion-button (click)="presentAlertConfirm()" [disabled]="form.isInvalid">
                         <ion-icon name="paper"></ion-icon>
                         Facturar
                     </ion-button>
