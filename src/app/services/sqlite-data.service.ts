@@ -104,21 +104,22 @@ export class SqliteDataService {
         case 'invoices':
             sqlText = `INSERT INTO invoices (customer, pricepounds ,licenseplate, paymentmethod, lotproduct, date, user)
              VALUES (?, ?, ?, ?, ?, ?, ?)`;
-            values = [item.customer || null , item.pricepounds || null, item.licenseplate || null , item.paymentmethod ||
-              null, item.lotproduct || null , item.date || null , item.user || null];
+            values = [item.customer || null , item.pricePounds || null, item.licensePlate || null , item.paymentMethod ||
+              null, item.lotProduct || null , item.date || null , item.user || null];
             break;
         case 'invoicedetails':
             sqlText = 'INSERT INTO invoicedetails (invoice, tareweight, grossweight) VALUES (?, ?, ?)';
-            values = [item.invoice || null , item.tareweight || null, item.grossweight || null];
+            values = [item.invoice || null , item.tareWeight || null, item.grossWeight || null];
             break;
         default :
         return ;
 
     }
-    return this.database.executeSql(sqlText, values).then( () => {
+    return this.database.executeSql(sqlText, values).then( success => {
       this.toastService.presentSuccessToast('El registro ha sido creado correctamente!');
-    }, () => {
+    }, err => {
       this.toastService.presentErrorToast('Ha ocurrido un error!, intentelo de nuevo...');
+      console.log('insert error:', err);
     });
   }
   public update(tableName, item) {

@@ -41,12 +41,12 @@ export class LoginService {
   }
 
   createSession(data) {
-    this.storage.set('username', data.rows.item(0).username);
+    this.storage.set('userID', data.rows.item(0).id);
     this.storage.set('level', data.rows.item(0).level);
   }
 
   validateSession() {
-     return this.storage.get('username').then(data => {
+     return this.storage.get('userID').then(data => {
       if (data) {
         return true;
         } else {
@@ -67,7 +67,7 @@ export class LoginService {
     }
 
   closeSession() {
-    this.storage.get('username').then(data => {
+    this.storage.get('userID').then(data => {
       if (data) {
         this.storage.clear().then(() =>
         this.toastService.presentDefaultToast('Se ha cerrado la session...'));

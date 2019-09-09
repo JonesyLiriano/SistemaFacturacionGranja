@@ -1,21 +1,144 @@
 <ion-header translucent>
     <ion-toolbar>
-      <ion-title>Detalle Factura</ion-title>
-      <ion-buttons slot="end">
-        <ion-button color="medium" fill="outline">Cerrar</ion-button>
-      </ion-buttons>
+        <ion-title>Detalle Factura</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="medium" fill="outline" (click)="dismissModal()">Cerrar</ion-button>
+        </ion-buttons>
     </ion-toolbar>
-  </ion-header>
-
+</ion-header>
 <ion-content>
-    <ion-card>
-        <ion-card-header>
-          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-          <ion-card-title>Card Title</ion-card-title>
-        </ion-card-header>
-      
-        <ion-card-content>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit clean.
-        </ion-card-content>
-      </ion-card>
+    <form #form="ngForm">
+        <ion-grid>
+            <ion-row justify-content-center padding class="padding-bottom0">
+                <ion-col size="8">
+                    <ion-item>
+                        <ion-label position="floating">Fecha:
+                        </ion-label>
+                        <ion-input name="date" [(ngModel)]="invoice.date" readonly="true"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-item>
+                        <ion-label position="floating">Pago:</ion-label>
+                        <ion-input type="text" readonly="true" [(ngModel)]="invoice.paymentMethod"
+                            [ngModelOptions]="{standalone: true}"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center padding class="padding-bottom0 padding-top">
+                <ion-col align-self-center size-xl="6" size-md="8" size-lg="6" size-xs="12">
+                    <div text-center>
+                        <ion-row>
+                            <ion-col size="8">
+                                <ion-item>
+                                    <ion-label position="floating">Cliente</ion-label>
+                                    <ion-input name="customer" [(ngModel)]="customer.name" readonly="true"></ion-input>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-item>
+                                    <ion-label position="floating">User:
+                                    </ion-label>
+                                    <ion-input name="user" [(ngModel)]="invoice.user" readonly="true"></ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                            <ion-col size="5">
+                                <ion-item>
+                                    <ion-label position="floating"># Placa
+                                    </ion-label>
+                                    <ion-input name="licensePlate" [(ngModel)]="invoice.licensePlate" readonly="true">
+                                    </ion-input>
+                                </ion-item>
+                            </ion-col>
+
+                            <ion-col size="7">
+                                <ion-card>
+                                    <ion-item>
+                                        <ion-label position="floating">Promedio:</ion-label>
+                                        <ion-input type="number" readonly="true" [(ngModel)]="average"
+                                            [ngModelOptions]="{standalone: true}"></ion-input>
+                                    </ion-item>
+                                </ion-card>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center padding class="padding-top0">
+                <ion-col align-self-center size-xl="3" size-md="4" size-lg="3" size-xs="6">
+                    <ion-item>
+                        <ion-label position="floating">Cant. de pollos
+                        </ion-label>
+                        <ion-input type="number" name="lotProduct" [(ngModel)]="invoice.lotProduct" readonly="true">
+                        </ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col align-self-center size-xl="3" size-md="4" size-lg="3" size-xs="6">
+                    <ion-item class="padding-left-2px">
+                        <ion-label position="floating">Precio/Lbs
+                        </ion-label>
+                        <ion-input name="pricePounds" type="number" [ngModel]="invoice.pricePounds"
+                            (ngModelChange)="invoice.pricePounds = $event" readonly="true"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center padding class="padding-bottom0">
+                <ion-col align-self-center size-xl="6" size-md="8" size-lg="6" size-xs="12">
+                    <ion-card scrollY="true" id="myFixZone">
+                        <ion-item-divider class="padding-right26">
+                            <ion-col size="2" class="border-right">
+                                No.
+                            </ion-col>
+                            <ion-col size="5" class="border-right">
+                                Tara
+                            </ion-col>
+                            <ion-col size="5">
+                                Peso bruto
+                            </ion-col>
+                        </ion-item-divider>
+                        <ion-list>
+                            <ion-item-group class="padding-right10"
+                                *ngFor="let line of lineDetails ; let index = index">
+                                <ion-item>
+                                    <ion-col size="2" class="border-right ">
+                                        {{index + 1}}
+                                    </ion-col>
+                                    <ion-col size="5" class="border-right">
+                                        {{line.tareWeight}}
+                                    </ion-col>
+                                    <ion-col size="5">
+                                        {{line.grossWeight}}
+                                    </ion-col>
+                                </ion-item>
+                            </ion-item-group>
+                        </ion-list>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center padding class="padding-top0">
+                <ion-card align-self-center size-xl="6" size-md="8" size-lg="6" size-xs="12">
+                    <ion-item>
+                        <ion-label position="inline">Peso Bruto Lbs:</ion-label>
+                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalGross"
+                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tara Lbs:</ion-label>
+                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalTare"
+                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="inline">&nbsp;Peso Neto Lbs:</ion-label>
+                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalNetWeight"
+                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                    </ion-item>
+                </ion-card>
+            </ion-row>
+        </ion-grid>
+    </form>
+
+</ion-content>

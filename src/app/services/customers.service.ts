@@ -44,4 +44,14 @@ export class CustomersService {
   deleteCustomer(customer: Customer) {
     return this.sqlData.remove('customers', customer);
   }
+
+  getCustomerName(id: number) {
+    return this.sqlData.condicionalQuery('Select * from customers WHERE id = ?', [id]).then(data => {
+      let customer: Customer;
+      if (data.rows.length > 0) {
+      return customer = data.rows.item(0);
+      }
+    });
+  }
+
 }

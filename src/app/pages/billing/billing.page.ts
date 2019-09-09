@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import {formatDate} from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
 import { AlertController } from '@ionic/angular';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { CustomersService } from 'src/app/services/customers.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-billing',
@@ -19,11 +21,8 @@ export class BillingPage implements OnInit {
   totalGross: number;
   totalNetWeight: number;
   average: number;
-  lotProduct: number;
-  pricePounds: number;
-  lastInvoiceID: number;
   constructor(private alertController: AlertController, private invoiceService: InvoicesService,
-              private customerService: CustomersService) {
+              private customerService: CustomersService, private storage: Storage) {
   }
 
   ngOnInit() {
@@ -32,11 +31,14 @@ export class BillingPage implements OnInit {
       customer: null,
       pricePounds: null,
       licensePlate: '',
-      paymentMethod: null,
+      paymentMethod: 'N/A',
       lotProduct: null,
-      date: null,
+      date: formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
       user: null
     };
+    this.storage.get('userID').then( data => {
+      this.invoice.user = data;
+    });
     this.getCustomers();
   }
 
@@ -130,9 +132,7 @@ export class BillingPage implements OnInit {
   }
 
   clearScreen() {
-    this.lastInvoiceID = null;
     this.invoice = null;
-    this.lineDetails = null;
   }
 
   printInvoice() {
@@ -141,17 +141,18 @@ export class BillingPage implements OnInit {
 
   complete() {
     this.createInvoice();
-    this.createInvoiceDetails();
   }
 
   createInvoice() {
     this.invoiceService.createInvoice(this.invoice);
-    this.lastInvoiceID = this.invoiceService.getLastInvoiceID();
+    this.invoiceService.getLastInvoiceID().then(data => {
+      this.createInvoiceDetails(data);
+    });
   }
 
-  createInvoiceDetails() {
+  createInvoiceDetails(lastInvoiceID: number) {
     this.lineDetails.forEach(element => {
-      element.invoice = this.lastInvoiceID;
+      element.invoice = lastInvoiceID;
       this.invoiceService.createInvoiceDetails(element);
     });
 
@@ -165,6 +166,6 @@ export class BillingPage implements OnInit {
       this.totalTare += +element.tareWeight;
     });
     this.totalNetWeight = Math.abs(this.totalTare - this.totalGross);
-    this.average = (+this.totalNetWeight.toFixed(2) * +this.pricePounds.toFixed(2)) / +this.lotProduct.toFixed(2);
+    this.average = (+this.totalNetWeight.toFixed(2) * +this.invoice.pricePounds.toFixed(2)) / +this.invoice.lotProduct.toFixed(2);
   }
 }

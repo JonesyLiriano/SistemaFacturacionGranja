@@ -39,7 +39,7 @@
                     <ion-item>
                         <ion-label position="floating">Cant. de pollos <ion-text color="danger">*</ion-text>
                         </ion-label>
-                        <ion-input type="number" name="lotProduct" [(ngModel)]="lotProduct" required>
+                        <ion-input type="number" name="lotProduct" [(ngModel)]="invoice.lotProduct" required>
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -47,8 +47,8 @@
                     <ion-item class="padding-left-2px">
                         <ion-label position="floating">Precio/Lbs <ion-text color="danger">*</ion-text>
                         </ion-label>
-                        <ion-input name="pricePounds" type="number" [ngModel]="pricePounds"
-                            (ngModelChange)="pricePounds = $event" required></ion-input>
+                        <ion-input name="pricePounds" type="number" [ngModel]="invoice.pricePounds"
+                            (ngModelChange)="invoice.pricePounds = $event" required></ion-input>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -117,7 +117,7 @@
                 </ion-card>
             </ion-row>
             <ion-row justify-content-center padding class="padding-top0">                
-                    <ion-button (click)="presentAlertConfirm()" [disabled]="form.isInvalid">
+                    <ion-button (click)="presentAlertConfirm()" [disabled]="form.invalid">
                         <ion-icon name="paper"></ion-icon>
                         Facturar
                     </ion-button>

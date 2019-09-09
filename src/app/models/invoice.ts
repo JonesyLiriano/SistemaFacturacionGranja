@@ -5,7 +5,7 @@ export class Invoice {
     licensePlate: string;
     paymentMethod: string;
     lotProduct: number;
-    date: Date;
+    date: string;
     user: number;
 
     constructor() { }
