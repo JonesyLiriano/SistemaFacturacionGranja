@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {IonicStorageModule} from '@ionic/storage';
-
+import { Printer } from '@ionic-native/printer/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +27,7 @@ import {IonicStorageModule} from '@ionic/storage';
     StatusBar,
     SplashScreen,
     SQLite,
+    Printer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

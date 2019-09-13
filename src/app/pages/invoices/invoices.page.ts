@@ -3,6 +3,8 @@ import { InvoiceDetailsModalPage } from '../invoice-details-modal/invoice-detail
 import { Invoice } from 'src/app/models/invoice';
 import { ModalController, AlertController } from '@ionic/angular';
 import { InvoicesService } from 'src/app/services/invoices.service';
+import { PrintService } from 'src/app/services/print.service';
+
 
 @Component({
   selector: 'app-invoices',
@@ -15,7 +17,7 @@ export class InvoicesPage implements OnInit {
   search;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
-              private invoiceService: InvoicesService) {}
+              private invoiceService: InvoicesService, private printerService: PrintService) {}
 
   ngOnInit() {
     this.loadInvoices();
@@ -35,7 +37,9 @@ export class InvoicesPage implements OnInit {
 
     await modal.present();
   }
-  printInvoice(invoice) {}
+  printInvoice(invoice) {
+    this.printerService.print(invoice);
+  }
 
   onFilter(search: string) {
     this.search = search;
