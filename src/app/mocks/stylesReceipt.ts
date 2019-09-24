@@ -26,8 +26,15 @@ p{
   //float: left;
   height: 60px;
   width: 60px;
-  background: url(../../assets/img/receiptLogo.png)
+  background-image: url(../assets/img/receiptLogo.png);
   background-size: 60px 60px;
+}
+.underscore{
+  border-top: 1px solid black;
+  margin-top: 50px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  font-size: 12px !important;
 }
 .info{
   display: block;

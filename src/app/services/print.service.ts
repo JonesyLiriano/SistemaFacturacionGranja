@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 import { LoadingController } from '@ionic/angular';
 import { Invoice } from '../models/invoice';
-import { NgForOf } from '@angular/common';
+import { NgForOf, formatNumber } from '@angular/common';
 import { InvoiceDetails } from '../models/invoice-details';
 import { Customer } from '../models/customer';
 import { SqliteDataService } from './sqlite-data.service';
@@ -22,6 +22,7 @@ export class PrintService {
   totalTareWeight = 0;
   totalGrossWeight = 0;
   docStyles = docStyles;
+  invoice: Invoice;
 
   docHeader = `<div id="invoice-POS">
   <center id="top">
@@ -37,6 +38,9 @@ export class PrintService {
   docMiddle;
 
   docFooter = `
+  <div id="legalcopy">
+  <center class="underscore">Recibido Conforme</center>
+  </div>
 <div id="legalcopy">
 <p class="legal"><strong>Gracias por su compra!</strong>.</br>
 Sistema realizado por Jonesy Liriano</br>
@@ -59,13 +63,14 @@ Tel: 809-222-3740
   }
 
   print(invoice: Invoice) {
+    this.invoice = invoice;
     this.presentLoading('Favor esperar mientras se imprime la factura');
-    this.searchCustomer(invoice.customer).then(() => {
+    this.searchCustomer(this.invoice.customer).then(() => {
       this.setCustomerDoc();
     });
-    this.searchLineDetails(invoice.id).then(() => {
+    this.searchLineDetails(this.invoice.id).then(() => {
       this.setLineDetailsDoc();
-      this.setPrinter(invoice);
+      this.setPrinter();
     });
   }
 
@@ -89,20 +94,30 @@ Tel: 809-222-3740
       this.totalGrossWeight += element.grossWeight;
       this.docLineDetails += `<tr class="linedetails">
     <td class="tableitem"><p class="itemtext">${key + 1}</p></td>
-    <td class="tableitem"><p class="itemtext">${element.tareWeight}</p></td>
-    <td class="tableitem"><p class="itemtext">${element.grossWeight}</p></td>
+    <td class="tableitem"><p class="itemtext">${(element.tareWeight.toLocaleString('en-US'))}</p></td>
+    <td class="tableitem"><p class="itemtext">${(element.grossWeight.toLocaleString('en-US'))}</p></td>
     </tr>`;
     }
     this.docLineDetails += `<tr class="tabletitle">
-    <td class="number">Total</td>
-    <td class="item"><h2>${this.totalTareWeight}</h2></td>
-    <td class="item"><h2>${this.totalGrossWeight}</h2></td>
+    <td class="number">Total Lbs</td>
+    <td class="item"><h2>${(this.totalTareWeight.toLocaleString('en-US'))}</h2></td>
+    <td class="item"><h2>${(this.totalGrossWeight.toLocaleString('en-US'))}</h2></td>
+    </tr>
+    <tr class="tabletitle">
+    <td class="number">Peso Neto Total:</td>
+    <td class="item"><h2>${(Math.abs(+this.totalTareWeight.toFixed(2) -
+      +this.totalGrossWeight.toFixed(2)).toLocaleString('en-US'))}</h2>
+    </tr>
+    <tr class="tabletitle">
+    <td class="number">Total RD$</td>
+    <td class="item"><h2>${((Math.abs(this.totalTareWeight -
+      this.totalGrossWeight) * this.invoice.pricePounds ).toLocaleString('en-US'))}</h2>
     </tr>
     </table>
     </div>`;
   }
 
-  setPrinter(invoice: Invoice) {
+  setPrinter() {
     const options: PrintOptions = {
       name: 'Factura',
       duplex: false,
@@ -110,8 +125,11 @@ Tel: 809-222-3740
       grayscale: true
     };
     this.docMiddle = `<div id="legalcopy" class="info">
-    <p>Cantidad de pollos: ${invoice.lotProduct}</br>
-    Precio por libra: ${invoice.pricePounds}</br></p>
+    <p>Cantidad de pollos: ${this.invoice.lotProduct}</br>
+    Precio por libra RD$: ${(this.invoice.pricePounds.toLocaleString('en-US'))}</br>
+    Promedio: ${(Math.abs(this.totalTareWeight -
+      this.totalGrossWeight / this.invoice.lotProduct).toFixed(6))}
+    </p>
     </div>
     <div id="bot">
   <center><h3>Detalle</h3></center>
@@ -124,20 +142,24 @@ Tel: 809-222-3740
       </tr>`;
 
     this.docInfoInvoice = `<div id="legalcopy">
-    <p class="legal">FacturaID: ${invoice.id}</br>
-Fecha: ${invoice.date}</br>
-Metodo de pago: ${invoice.paymentMethod}</br>
-Numero de placa: ${invoice.licensePlate}</br>
-UsuarioID: ${invoice.user}</br>
+    <p class="legal">FacturaID: ${this.invoice.id}</br>
+Fecha: ${this.invoice.date}</br>
+Metodo de pago: ${this.invoice.paymentMethod}</br>
+Numero de placa: ${this.invoice.licensePlate}</br>
+UsuarioID: ${this.invoice.user}</br>
 </p>
 </div>
 </div>
 </div>`;
+
     const page = (this.docStyles + this.docHeader + this.docInfoCustomer + this.docMiddle +
       this.docLineDetails + this.docInfoInvoice + this.docFooter);
     this.printer.print(page, options).then(() => {
       this.loadingController.dismiss();
+    }, err => {
+      console.log('printer error: ', err);
     });
+
   }
   searchCustomer(customerID) {
     return this.customerService.getCustomerName(customerID).then(data => {

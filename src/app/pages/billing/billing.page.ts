@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, LOCALE_ID } from '@angular/core';
 import {formatDate} from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Storage } from '@ionic/storage';
+import { PrintService } from 'src/app/services/print.service';
+import { parse } from 'url';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-billing',
@@ -21,8 +24,11 @@ export class BillingPage implements OnInit {
   totalGross: number;
   totalNetWeight: number;
   average: number;
+  totalPrice: number;
+
   constructor(private alertController: AlertController, private invoiceService: InvoicesService,
-              private customerService: CustomersService, private storage: Storage) {
+              private customerService: CustomersService, private storage: Storage,
+              private printerService: PrintService, private router: Router) {
   }
 
   ngOnInit() {
@@ -115,8 +121,6 @@ export class BillingPage implements OnInit {
           text: 'Aceptar',
           handler: () => {
            this.complete();
-           this.clearScreen();
-           this.printInvoice();
           }
         }
       ]
@@ -132,22 +136,38 @@ export class BillingPage implements OnInit {
   }
 
   clearScreen() {
-    this.invoice = null;
+    this.invoice = {
+      id: null,
+      customer: null,
+      pricePounds: null,
+      licensePlate: '',
+      paymentMethod: 'N/A',
+      lotProduct: null,
+      date: formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
+      user: null
+    };
+    this.lineDetails = null;
   }
 
-  printInvoice() {
-    console.log('print');
+  printInvoice(invoice) {
+    this.printerService.print(invoice);
   }
 
   complete() {
-    this.createInvoice();
+    this.createInvoice().then(() => {
+     this.printInvoice(this.invoice);
+     location.reload(true);
+    });
   }
 
   createInvoice() {
     this.invoiceService.createInvoice(this.invoice);
-    this.invoiceService.getLastInvoiceID().then(data => {
+    return this.invoiceService.getLastInvoiceID().then(data => {
+      this.invoice.id = data;
+      this.invoice.date = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en-US');
       this.createInvoiceDetails(data);
     });
+
   }
 
   createInvoiceDetails(lastInvoiceID: number) {
@@ -158,14 +178,25 @@ export class BillingPage implements OnInit {
 
   }
 
+  onChangeLotProduct(event) {
+    this.invoice.lotProduct = event;
+    this.setResult();
+  }
+  onChangePricePounds(event) {
+    this.invoice.pricePounds = event;
+    this.setResult();
+  }
+
   setResult() {
     this.totalGross = 0;
     this.totalTare = 0;
+    this.totalPrice = 0;
     this.lineDetails.forEach(element => {
       this.totalGross += +element.grossWeight;
       this.totalTare += +element.tareWeight;
     });
     this.totalNetWeight = Math.abs(this.totalTare - this.totalGross);
-    this.average = (+this.totalNetWeight.toFixed(2) * +this.invoice.pricePounds.toFixed(2)) / +this.invoice.lotProduct.toFixed(2);
+    this.average = +(+this.totalNetWeight.toFixed(2) / +this.invoice.lotProduct).toFixed(6);
+    this.totalPrice = (+this.invoice.pricePounds * +this.totalNetWeight.toFixed(2));
   }
 }

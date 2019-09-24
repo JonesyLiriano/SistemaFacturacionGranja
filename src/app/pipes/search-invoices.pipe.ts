@@ -1,17 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Invoice } from '../models/invoice';
 
 @Pipe({
   name: 'searchInvoices'
 })
 export class SearchInvoicesPipe implements PipeTransform {
 
-  transform(items: any[], search: string): any {
+  transform(items: Invoice[], search: string): any {
     if (!items || !search) {
       return items;
     }
     return items.filter(item =>
-      item.customer.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-      item.id.toLowerCase().indexOf(search.toLowerCase()) !== -1 );
+      item.customer.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+      item.id.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+      item.date.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
   }
 
 }

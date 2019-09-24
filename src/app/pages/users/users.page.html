@@ -7,7 +7,7 @@
     </ion-button>
   </ion-item>
   <div>
-    <ion-virtual-scroll [items]="users | searchUsers : search" [trackBy]=trackByFn approxItemHeight="320px">
+    <ion-virtual-scroll [items]="users | searchUsers : search" approxItemHeight="320px">
       <ion-item-sliding *virtualItem="let user">
         <ion-item>
           <ion-icon name="person" slot="start"></ion-icon>

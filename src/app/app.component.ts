@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +32,11 @@ export class AppComponent implements OnInit {
       icon: 'contacts'
     },
     {
+      title: 'Copia de Seguridad',
+      url: '/dBUpdate',
+      icon: 'cloud-upload'
+    },
+    {
       title: 'Salir',
       url: '/login',
       icon: 'log-out'
@@ -53,7 +57,7 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#1976d2');
       this.splashScreen.hide();
     });
 }

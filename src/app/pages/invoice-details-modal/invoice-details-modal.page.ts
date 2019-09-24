@@ -19,6 +19,7 @@ export class InvoiceDetailsModalPage implements OnInit {
   totalGross: number;
   totalNetWeight: number;
   average: number;
+  totalPrice: number;
   constructor(private modalController: ModalController, private customerService: CustomersService,
               private invoiceService: InvoicesService) { }
 
@@ -44,15 +45,26 @@ export class InvoiceDetailsModalPage implements OnInit {
       this.setResult();
       });
   }
+  onChangeLotProduct(event) {
+    this.invoice.lotProduct = event;
+    this.setResult();
+  }
+  onChangePricePounds(event) {
+    this.invoice.pricePounds = event;
+    this.setResult();
+  }
+
   setResult() {
     this.totalGross = 0;
     this.totalTare = 0;
+    this.totalPrice = 0;
     this.lineDetails.forEach(element => {
       this.totalGross += +element.grossWeight;
       this.totalTare += +element.tareWeight;
     });
     this.totalNetWeight = Math.abs(this.totalTare - this.totalGross);
-    this.average = (+this.totalNetWeight.toFixed(2) * +this.invoice.pricePounds.toFixed(2)) / +this.invoice.lotProduct.toFixed(2);
+    this.average = +(+this.totalNetWeight.toFixed(2) / +this.invoice.lotProduct).toFixed(6);
+    this.totalPrice = (+this.invoice.pricePounds * +this.totalNetWeight.toFixed(2));
   }
 }
 

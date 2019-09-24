@@ -2,12 +2,12 @@
 <ion-content padding id="printable-area">
   <ion-item>
     <app-filter (filter)="onFilter($event)"></app-filter>
-    <ion-button color="tertiary" slot="end">
+    <ion-button color="tertiary" slot="end" [routerLink]="['/billing']">
       <ion-icon slot="icon-only" name="add"></ion-icon>
     </ion-button>
   </ion-item>
   <div>
-    <ion-virtual-scroll [items]="invoices | searchInvoices : search" [trackBy]="trackByFn" approxItemHeight="320px">
+    <ion-virtual-scroll [items]="invoices | searchInvoices : search" approxItemHeight="320px">
       <ion-item-sliding *virtualItem="let invoice">
         <ion-item>
           <ion-icon name="paper" slot="start"></ion-icon>

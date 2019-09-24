@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-title>Detalle Factura</ion-title>
         <ion-buttons slot="end">
-            <ion-button color="medium" fill="outline" (click)="dismissModal()">Cerrar</ion-button>
+            <ion-button (click)="dismissModal()">Cerrar</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -58,8 +58,8 @@
                                 <ion-card>
                                     <ion-item>
                                         <ion-label position="floating">Promedio:</ion-label>
-                                        <ion-input type="number" readonly="true" [(ngModel)]="average"
-                                            [ngModelOptions]="{standalone: true}"></ion-input>
+                                        <ion-input type="text" inputmode="decimal" readonly="true" [ngModel]="average"
+                                        (ngModelChange)="average = $event" [ngModelOptions]="{standalone: true}"></ion-input>
                                     </ion-item>
                                 </ion-card>
                             </ion-col>
@@ -72,7 +72,8 @@
                     <ion-item>
                         <ion-label position="floating">Cant. de pollos
                         </ion-label>
-                        <ion-input type="number" name="lotProduct" [(ngModel)]="invoice.lotProduct" readonly="true">
+                        <ion-input type="text" inputmode="numeric" name="lotProduct" [ngModel]="invoice.lotProduct | number: '2.2'" readonly="true"
+                        (ngModelChange)="onChangeLotProduct($event)">
                         </ion-input>
                     </ion-item>
                 </ion-col>
@@ -80,8 +81,8 @@
                     <ion-item class="padding-left-2px">
                         <ion-label position="floating">Precio/Lbs
                         </ion-label>
-                        <ion-input name="pricePounds" type="number" [ngModel]="invoice.pricePounds"
-                            (ngModelChange)="invoice.pricePounds = $event" readonly="true"></ion-input>
+                        <ion-input name="pricePounds" type="text" [ngModel]="invoice.pricePounds | number: '2.2'"
+                           inputmode="decimal" (ngModelChange)="onChangePricePounds($event)" readonly="true"></ion-input>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -122,19 +123,24 @@
                 <ion-card align-self-center size-xl="6" size-md="8" size-lg="6" size-xs="12">
                     <ion-item>
                         <ion-label position="inline">Peso Bruto Lbs:</ion-label>
-                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalGross"
-                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                        <ion-input type="text" class="font-size-bold18" [ngModel]="totalGross | number: '2.2'"
+                        (ngModelChange)="totalGross = $event" [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
                     </ion-item>
                     <ion-item>
                         <ion-label position="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tara Lbs:</ion-label>
-                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalTare"
-                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                        <ion-input type="text" class="font-size-bold18" [ngModel]="totalTare | number: '2.2'"
+                        (ngModelChange)="totalTare = $event" [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
                     </ion-item>
                     <ion-item>
                         <ion-label position="inline">&nbsp;Peso Neto Lbs:</ion-label>
-                        <ion-input type="number" class="font-size-bold18" [(ngModel)]="totalNetWeight"
-                            [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                        <ion-input type="text" class="font-size-bold18" [ngModel]="totalNetWeight | number: '2.2'"
+                        (ngModelChange)="totalNetWeight = $event" [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="inline">&nbsp;&nbsp;Monto Total $:</ion-label>
+                        <ion-input type="text" class="font-size-bold18" [ngModel]="totalPrice | number: '2.2'"
+                        (ngModelChange)="totalPrice = $event" [ngModelOptions]="{standalone: true}" readonly="true"></ion-input>
                     </ion-item>
                 </ion-card>
             </ion-row>

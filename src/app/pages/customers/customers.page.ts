@@ -81,8 +81,4 @@ export class CustomersPage implements OnInit {
   onFilter(search: string) {
     this.search = search;
 }
-trackByFn(index, item) {
-  return item ? item.id : index;
-}
-
 }
