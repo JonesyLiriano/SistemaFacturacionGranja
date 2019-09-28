@@ -19,22 +19,24 @@ export class InvoicesService {
   getInvoices() {
     this.sqlData.databaseReady.subscribe(state => {
       if (state) {
-        this.sqlData.list('invoices').then( data => {
+        this.sqlData.condicionalQuery('Select * from invoices order by id desc', []).then(data => {
           if (data.rows.length > 0) {
             const invoices: Invoice[] = [];
             for (let i = 0; i < data.rows.length; i++) {
-            invoices.push({id: data.rows.item(i).id,
-              customer: data.rows.item(i).customer,
-              pricePounds: data.rows.item(i).pricepounds,
-              licensePlate: data.rows.item(i).licenseplate,
-              paymentMethod: data.rows.item(i).paymentmethod,
-              lotProduct: data.rows.item(i).lotproduct,
-              date: data.rows.item(i).date,
-              user: data.rows.item(i).user});
-          }
+              invoices.push({
+                id: data.rows.item(i).id,
+                customer: data.rows.item(i).customer,
+                pricePounds: data.rows.item(i).pricepounds,
+                licensePlate: data.rows.item(i).licenseplate,
+                paymentMethod: data.rows.item(i).paymentmethod,
+                lotProduct: data.rows.item(i).lotproduct,
+                date: data.rows.item(i).date,
+                user: data.rows.item(i).user
+              });
+            }
             this.invoices$.next(invoices);
-        }
-         });
+          }
+        });
       }
     });
     return this.invoices$.asObservable();
@@ -60,14 +62,15 @@ export class InvoicesService {
       if (data.rows.length > 0) {
         const lineDetails: InvoiceDetails[] = [];
         for (let i = 0; i < data.rows.length; i++) {
-        lineDetails.push({id: data.rows.item(i).id,
-          invoice: data.rows.item(i).invoice,
-          tareWeight: data.rows.item(i).tareweight,
-          grossWeight: data.rows.item(i).grossweight
-      });
-    }
+          lineDetails.push({
+            id: data.rows.item(i).id,
+            invoice: data.rows.item(i).invoice,
+            tareWeight: data.rows.item(i).tareweight,
+            grossWeight: data.rows.item(i).grossweight
+          });
+        }
         return lineDetails;
-  }
+      }
     });
   }
 }

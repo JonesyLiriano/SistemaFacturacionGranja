@@ -1,5 +1,5 @@
 import { Component, OnInit, LOCALE_ID } from '@angular/core';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
@@ -32,6 +32,11 @@ export class BillingPage implements OnInit {
   }
 
   ngOnInit() {
+    this.inicializeVar();
+    this.getCustomers();
+  }
+
+  inicializeVar() {
     this.invoice = {
       id: null,
       customer: null,
@@ -42,10 +47,9 @@ export class BillingPage implements OnInit {
       date: formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
       user: null
     };
-    this.storage.get('userID').then( data => {
+    this.storage.get('userID').then(data => {
       this.invoice.user = data;
     });
-    this.getCustomers();
   }
 
   async deleteLine(index) {
@@ -94,19 +98,47 @@ export class BillingPage implements OnInit {
         }, {
           text: 'Agregar',
           handler: data => {
-            this.lineDetails.push(
-              {
-                id: null,
-                invoice: null,
-                tareWeight: data.tare,
-                grossWeight: data.gross
-              });
+            if (data.tare === '') {
+              data.tare = 0;
+            }
+            if (data.gross === '') {
+              data.gross = 0;
+            }
+            this.addLineDetail(data);
             this.setResult();
           }
         }
       ]
     });
     await alert.present();
+  }
+
+  addLineDetail(data) {
+    if (data.tare !== 0) {
+      const indexTare = this.lineDetails.findIndex(x => x.tareWeight === 0);
+      if (indexTare !== -1) {
+        this.lineDetails[indexTare].tareWeight = data.tare;
+        data.tare = 0;
+      }
+    }
+    if (data.gross !== 0) {
+      const indexGrossWeight = this.lineDetails.findIndex(x => x.grossWeight === 0);
+      console.log(indexGrossWeight);
+      if (indexGrossWeight !== -1) {
+        this.lineDetails[indexGrossWeight].grossWeight = data.gross;
+        data.gross = 0;
+      }
+    }
+
+    if (!(data.tare === 0 && data.gross === 0)) {
+      this.lineDetails.push(
+        {
+          id: null,
+          invoice: null,
+          tareWeight: data.tare,
+          grossWeight: data.gross
+        });
+    }
   }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
@@ -120,7 +152,7 @@ export class BillingPage implements OnInit {
         }, {
           text: 'Aceptar',
           handler: () => {
-           this.complete();
+            this.complete();
           }
         }
       ]
@@ -130,23 +162,19 @@ export class BillingPage implements OnInit {
   }
 
   getCustomers() {
-   this.customerService.getCustomers().subscribe(data => {
-    this.customers = data;
-   });
+    this.customerService.getCustomers().subscribe(data => {
+      this.customers = data;
+    });
   }
 
   clearScreen() {
-    this.invoice = {
-      id: null,
-      customer: null,
-      pricePounds: null,
-      licensePlate: '',
-      paymentMethod: 'N/A',
-      lotProduct: null,
-      date: formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
-      user: null
-    };
-    this.lineDetails = null;
+    this.inicializeVar();
+    this.lineDetails.length = 0;
+    this.totalTare = null;
+    this.totalGross = null;
+    this.average = null;
+    this.totalNetWeight = null;
+    this.totalPrice = null;
   }
 
   printInvoice(invoice) {
@@ -155,8 +183,8 @@ export class BillingPage implements OnInit {
 
   complete() {
     this.createInvoice().then(() => {
-     this.printInvoice(this.invoice);
-     location.reload(true);
+      this.printInvoice(this.invoice);
+      this.clearScreen();
     });
   }
 

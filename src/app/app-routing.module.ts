@@ -26,7 +26,8 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  }
+  },
+  { path: 'invoices-report', loadChildren: './pages/invoices-report/invoices-report.module#InvoicesReportPageModule' }
 ];
 
 @NgModule({
