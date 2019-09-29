@@ -23,11 +23,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/users/users.module').then(m => m.UsersPageModule)
   },
   {
+    path: 'invoices-report',
+    loadChildren: () => import('./pages/invoices-report/invoices-report.module').then(m => m.InvoicesReportPageModule)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  },
-  { path: 'invoices-report', loadChildren: './pages/invoices-report/invoices-report.module#InvoicesReportPageModule' }
+  }
 ];
 
 @NgModule({

@@ -9,6 +9,7 @@ import { SqliteDataService } from './sqlite-data.service';
 import { CustomersService } from './customers.service';
 import { InvoicesService } from './invoices.service';
 import { docStyles } from '../mocks/stylesReceipt';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,8 @@ Tel: 809-222-3740
 
   constructor(private printer: Printer, private loadingController: LoadingController,
               private customerService: CustomersService,
-              private invoiceDetailsService: InvoicesService) {
+              private invoiceDetailsService: InvoicesService,
+              private toastService: ToastService) {
 
   }
   async presentLoading(msg) {
@@ -157,6 +159,8 @@ UsuarioID: ${this.invoice.user}</br>
     this.printer.print(page, options).then(() => {
       this.loadingController.dismiss();
     }, err => {
+      this.loadingController.dismiss();
+      this.toastService.presentErrorToast('No se ha podido imprimir la factura, revise los campos nuevamente.');
       console.log('printer error: ', err);
     });
 

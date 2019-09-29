@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { MenuController } from '@ionic/angular';
+import { MenuController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,9 @@ import { MenuController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit, OnDestroy {
   public showPassword: boolean;
-  constructor(private loginService: LoginService, private router: Router, public menuCtrl: MenuController) {
-   }
+  constructor(private loginService: LoginService, private router: Router,
+              public menuCtrl: MenuController, private loadingController: LoadingController) {
+  }
   user: User;
   ngOnInit() {
     this.loginService.closeSession();
@@ -25,21 +26,28 @@ export class LoginPage implements OnInit, OnDestroy {
       level: ''
     };
   }
-
+  async presentLoading(msg) {
+    const loading = await this.loadingController.create({
+      message: msg
+    });
+    return await loading.present();
+  }
   onSubmit() {
-  this.loginService.confirmUser(this.user).then(response => {
-    if (response) {
-      this.menuCtrl.enable(true);
-      this.router.navigate(['/billing']);
-    } else {
-      this.user = {
-        id: null,
-        username: '',
-        password: '',
-        level: ''
-      };
-    }
-  });
+    this.presentLoading('Cargando, por favor espere...');
+    this.loginService.confirmUser(this.user).then(response => {
+      if (response) {
+        this.menuCtrl.enable(true);
+        this.router.navigate(['/billing']);
+      } else {
+        this.loadingController.dismiss();
+        this.user = {
+          id: null,
+          username: '',
+          password: '',
+          level: ''
+        };
+      }
+    });
   }
 
   ngOnDestroy() {

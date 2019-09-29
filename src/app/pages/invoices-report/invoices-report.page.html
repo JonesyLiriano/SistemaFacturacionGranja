@@ -1,13 +1,64 @@
 <app-toolbar [title]="'Reporte Ventas'"></app-toolbar>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Desde</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Hasta</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789"></ion-datetime>
-  </ion-item>  
-  
+  <ion-row justify-content-center padding>
+    <ion-col align-self-center size-xl="3" size-md="4" size-lg="3" size-xs="6">
+      <ion-item>
+        <ion-label position="floating">Desde</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" min="2019-01-01" [max]="secondDate" [(ngModel)]="firstDate"
+          [ngModelOptions]="{standalone: true}"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col align-self-center size-xl="3" size-md="4" size-lg="3" size-xs="6">
+      <ion-item>
+        <ion-label position="floating">Hasta</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" [min]="firstDate" [max]="maxDate" [(ngModel)]="secondDate"
+          [ngModelOptions]="{standalone: true}"></ion-datetime>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row justify-content-center padding>
+    <ion-col align-self-center size-xl="10" size-md="10" size-lg="10" size-xs="12">
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Reporte de ventas</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              <ion-item>
+                  <ion-label position="floating">Cantidad de pollos vendidos:</ion-label>
+                  <ion-input type="text" readonly="true" [ngModel]="average"
+                   [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label position="floating">Cantidad de libras vendidas:</ion-label>
+                  <ion-input type="text" readonly="true" [ngModel]="average"
+                   [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label position="floating">Monto total:</ion-label>
+                  <ion-input type="text" readonly="true" [ngModel]="average"
+                   [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label position="floating">Promedio general:</ion-label>
+                  <ion-input type="text" readonly="true" [ngModel]="average"
+                   [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <hr>
+              <hr>
+           <ion-label>Cantidad de facturas realizadas</ion-label> 
+           <hr>
+           <ion-label>-Resumen del cliente favorito-</ion-label>
+           <ion-label>Cliente:</ion-label>
+           <ion-label>Cantidad de facturas:</ion-label>
+           <ion-label>Cantidad de libras:</ion-label>
+           <ion-label>Monto facturado:</ion-label>
+
+          </ion-card-content>
+        </ion-card>   
+      
+    </ion-col>
+  </ion-row>
+
+
 </ion-content>

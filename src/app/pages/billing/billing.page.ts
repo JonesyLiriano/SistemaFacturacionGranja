@@ -3,7 +3,7 @@ import { formatDate } from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Storage } from '@ionic/storage';
@@ -28,12 +28,14 @@ export class BillingPage implements OnInit {
 
   constructor(private alertController: AlertController, private invoiceService: InvoicesService,
               private customerService: CustomersService, private storage: Storage,
-              private printerService: PrintService, private router: Router) {
+              private printerService: PrintService, private router: Router,
+              private loadingController: LoadingController) {
   }
 
   ngOnInit() {
     this.inicializeVar();
     this.getCustomers();
+    this.loadingController.dismiss();
   }
 
   inicializeVar() {

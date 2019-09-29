@@ -32,6 +32,11 @@ export class AppComponent implements OnInit {
       icon: 'contacts'
     },
     {
+      title: 'Reporte de ventas',
+      url: '/invoices-report',
+      icon: 'stats'
+    },
+    {
       title: 'Copia de Seguridad',
       url: '/dBUpdate',
       icon: 'cloud-upload'
