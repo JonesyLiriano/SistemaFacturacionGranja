@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 
 import { InvoicesReportPage } from './invoices-report.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AuthAdminGuard } from 'src/app/shared/guards/auth-admin.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: InvoicesReportPage
+    component: InvoicesReportPage,
+    canActivate: [AuthAdminGuard]
   }
 ];
 

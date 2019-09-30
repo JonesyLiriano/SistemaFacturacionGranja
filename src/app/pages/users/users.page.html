@@ -2,9 +2,6 @@
 <ion-content padding>
   <ion-item>
     <app-filter (filter)="onFilter($event)"></app-filter>
-    <ion-button class="ion-no-margin" (click)="presentAddModal()" size="small" color="tertiary" slot="end">
-      <ion-icon slot="icon-only" name="person-add"></ion-icon>
-    </ion-button>
   </ion-item>
   <div>
     <ion-virtual-scroll [items]="users | searchUsers : search" approxItemHeight="320px">
@@ -27,4 +24,9 @@
       </ion-item-sliding>
     </ion-virtual-scroll>
   </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="presentAddModal()" color="tertiary">
+      <ion-icon name="person-add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

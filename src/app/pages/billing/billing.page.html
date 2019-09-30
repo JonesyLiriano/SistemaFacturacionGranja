@@ -8,7 +8,7 @@
                         <ion-item>
                             <ion-icon slot="start" name="person"></ion-icon>
                             <ion-label>Cliente</ion-label>
-                            <ion-select name="customer" placeholder="Cliente" [(ngModel)]="invoice.customer">
+                            <ion-select name="customer" placeholder="Cliente" [(ngModel)]="invoice.customer" required>
                                 <ion-select-option *ngFor="let customer of customers" [value]="customer.id">
                                     {{customer.name}}</ion-select-option>
                             </ion-select>
@@ -49,7 +49,7 @@
                         <ion-label position="floating">Precio/Lbs <ion-text color="danger">*</ion-text>
                         </ion-label>
                         <ion-input name="pricePounds" type="text" inputmode="decimal" [ngModel]="invoice.pricePounds"
-                            (ngModelChange)="onChangePricePounds($event)" required></ion-input>
+                            (ngModelChange)="onChangePricePounds($event)" (ionBlur)="checkPricePounds()" required></ion-input>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -123,7 +123,7 @@
                 </ion-card>
             </ion-row>
             <ion-row justify-content-center padding class="padding-top0">                
-                    <ion-button (click)="presentAlertConfirm()" [disabled]="form.invalid">
+                    <ion-button (click)="presentAlertConfirm()" [disabled]="form.invalid || errorData || lineDetails.length <= 0">
                         <ion-icon name="paper"></ion-icon>
                         Facturar
                     </ion-button>

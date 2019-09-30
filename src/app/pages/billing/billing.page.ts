@@ -1,4 +1,4 @@
-import { Component, OnInit, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, LOCALE_ID, AfterViewInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
@@ -8,15 +8,15 @@ import { InvoicesService } from 'src/app/services/invoices.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Storage } from '@ionic/storage';
 import { PrintService } from 'src/app/services/print.service';
-import { parse } from 'url';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.page.html',
   styleUrls: ['./billing.page.scss'],
 })
-export class BillingPage implements OnInit {
+export class BillingPage implements OnInit, AfterViewInit {
   customers: Customer[];
   invoice: Invoice;
   lineDetails: InvoiceDetails[] = [];
@@ -25,17 +25,21 @@ export class BillingPage implements OnInit {
   totalNetWeight: number;
   average: number;
   totalPrice: number;
-
+  errorData: boolean;
   constructor(private alertController: AlertController, private invoiceService: InvoicesService,
               private customerService: CustomersService, private storage: Storage,
-              private printerService: PrintService, private router: Router,
+              private printerService: PrintService, private toastService: ToastService,
               private loadingController: LoadingController) {
   }
 
   ngOnInit() {
+    this.errorData = true;
     this.inicializeVar();
     this.getCustomers();
-    this.loadingController.dismiss();
+  }
+
+  ngAfterViewInit() {
+    this.loadingController.dismiss().then();
   }
 
   inicializeVar() {
@@ -215,6 +219,15 @@ export class BillingPage implements OnInit {
   onChangePricePounds(event) {
     this.invoice.pricePounds = event;
     this.setResult();
+  }
+
+  checkPricePounds() {
+    if (isNaN(this.invoice.pricePounds)) {
+      this.errorData = true;
+      this.toastService.presentDefaultToast('El precio por libras tiene que ser un numero valido...');
+    } else {
+      this.errorData = false;
+    }
   }
 
   setResult() {

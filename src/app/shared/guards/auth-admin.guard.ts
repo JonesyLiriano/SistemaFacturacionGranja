@@ -23,7 +23,7 @@ return this.loginService.validateAdminSession().then(validation => {
   if (validation) {
     return true;
   } else {
-    this.toastService.presentErrorToast('No tiene acceso para entrar en el modulo de usuario');
+    this.toastService.presentErrorToast('No tiene acceso de administrador para poder entrar a este modulo.);
     return false;
   }
 });

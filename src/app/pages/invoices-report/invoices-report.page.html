@@ -1,4 +1,4 @@
-<app-toolbar [title]="'Reporte Ventas'"></app-toolbar>
+  <app-toolbar [title]="'Reporte Ventas'"></app-toolbar>
 
 <ion-content>
   <ion-row justify-content-center padding>
@@ -6,14 +6,14 @@
       <ion-item>
         <ion-label position="floating">Desde</ion-label>
         <ion-datetime displayFormat="DD-MM-YYYY" min="2019-01-01" [max]="secondDate" [(ngModel)]="firstDate"
-          [ngModelOptions]="{standalone: true}"></ion-datetime>
+          [ngModelOptions]="{standalone: true}" (ionChange)="getData()"></ion-datetime>
       </ion-item>
     </ion-col>
     <ion-col align-self-center size-xl="3" size-md="4" size-lg="3" size-xs="6">
       <ion-item>
         <ion-label position="floating">Hasta</ion-label>
-        <ion-datetime displayFormat="DD-MM-YYYY" [min]="firstDate" [max]="maxDate" [(ngModel)]="secondDate"
-          [ngModelOptions]="{standalone: true}"></ion-datetime>
+        <ion-datetime displayFormat="DD-MM-YYYY" [min]="firstDate" [max]="maxDate"  [(ngModel)]="secondDate"
+          [ngModelOptions]="{standalone: true}" (ionChange)="getData()"></ion-datetime>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -26,33 +26,27 @@
           <ion-card-content>
               <ion-item>
                   <ion-label position="floating">Cantidad de pollos vendidos:</ion-label>
-                  <ion-input type="text" readonly="true" [ngModel]="average"
+                  <ion-input type="text" readonly="true" [ngModel]="resultReport.lotProduct | number : '2.2'"
                    [ngModelOptions]="{standalone: true}"></ion-input>
               </ion-item>
               <ion-item>
                   <ion-label position="floating">Cantidad de libras vendidas:</ion-label>
-                  <ion-input type="text" readonly="true" [ngModel]="average"
+                  <ion-input type="text" readonly="true" [ngModel]="resultReport.netWeight | number : '2.2'"
                    [ngModelOptions]="{standalone: true}"></ion-input>
               </ion-item>
               <ion-item>
                   <ion-label position="floating">Monto total:</ion-label>
-                  <ion-input type="text" readonly="true" [ngModel]="average"
+                  <ion-input type="text" readonly="true" [ngModel]="resultReport.totalImport | number : '2.2'"
                    [ngModelOptions]="{standalone: true}"></ion-input>
               </ion-item>
               <ion-item>
                   <ion-label position="floating">Promedio general:</ion-label>
-                  <ion-input type="text" readonly="true" [ngModel]="average"
+                  <ion-input type="text" readonly="true" [ngModel]="resultReport.generalAverage | number : '2.2'"
                    [ngModelOptions]="{standalone: true}"></ion-input>
               </ion-item>
               <hr>
               <hr>
-           <ion-label>Cantidad de facturas realizadas</ion-label> 
-           <hr>
-           <ion-label>-Resumen del cliente favorito-</ion-label>
-           <ion-label>Cliente:</ion-label>
-           <ion-label>Cantidad de facturas:</ion-label>
-           <ion-label>Cantidad de libras:</ion-label>
-           <ion-label>Monto facturado:</ion-label>
+           <ion-label>Cantidad de facturas realizadas: {{resultReport.totalInvoices}}</ion-label>
 
           </ion-card-content>
         </ion-card>   

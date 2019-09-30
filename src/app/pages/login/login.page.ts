@@ -33,13 +33,12 @@ export class LoginPage implements OnInit, OnDestroy {
     return await loading.present();
   }
   onSubmit() {
-    this.presentLoading('Cargando, por favor espere...');
     this.loginService.confirmUser(this.user).then(response => {
       if (response) {
+        this.presentLoading('Cargando, por favor espere...');
         this.menuCtrl.enable(true);
         this.router.navigate(['/billing']);
       } else {
-        this.loadingController.dismiss();
         this.user = {
           id: null,
           username: '',
