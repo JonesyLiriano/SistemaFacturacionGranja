@@ -9,14 +9,12 @@ export class InvoicesReportService {
     lotProduct: 0,
     netWeight: 0,
     totalImport: 0,
-    generalAverage: 0,
     totalInvoices: 0
   };
   query = `SELECT (SELECT SUM(lotProduct) FROM invoices WHERE DATE(substr(date,7,4)
            ||'-'||substr(date,4,2) ||'-' ||substr(date,1,2)) BETWEEN DATE(?) AND DATE(?)) as lotProduct,
-           SUM(ide.grossWeight - ide.tareWeight)
-           as netWeight, SUM((ide.grossWeight - ide.tareWeight) * i.pricePounds) as totalImport,
-           SUM((ide.grossWeight - ide.tareWeight) / i.lotProduct) as generalAverage,
+           SUM(ifnull(ide.grossWeight, 0) - ifnull(ide.tareWeight, 0))
+           as netWeight, SUM((ifnull(ide.grossWeight, 0) - ifnull(ide.tareWeight, 0)) * i.pricePounds) as totalImport,
            COUNT(DISTINCT i.id) as totalInvoices FROM invoices i Inner Join invoicedetails ide
            On ide.invoice = i.id WHERE DATE(substr(i.date,7,4)
            ||'-'

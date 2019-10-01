@@ -11,9 +11,9 @@ export class InvoicesReportPage implements OnInit {
     lotProduct: 0,
     netWeight: 0,
     totalImport: 0,
-    generalAverage: 0,
     totalInvoices: 0
   };
+  generalAverage: number;
   firstDate: string;
   secondDate: string;
   maxDate: string;
@@ -29,6 +29,7 @@ export class InvoicesReportPage implements OnInit {
     this.date.getTimezoneOffset() * 60000).toISOString();
     this.secondDate = new Date(this.date.getTime() -
     this.date.getTimezoneOffset() * 60000).toISOString();
+    this.generalAverage = 0;
     this.getData();
   }
 
@@ -36,6 +37,7 @@ export class InvoicesReportPage implements OnInit {
     this.invoicesReportService.getData(this.firstDate.split('T')[0],
       this.secondDate.split('T')[0]).then(data => {
        this.resultReport = data;
+       this.generalAverage = (this.resultReport.netWeight / this.resultReport.lotProduct);
     });
   }
 
