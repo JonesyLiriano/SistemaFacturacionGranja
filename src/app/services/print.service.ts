@@ -92,12 +92,12 @@ Tel: 809-222-3740
     this.totalTareWeight = 0;
     this.totalGrossWeight = 0;
     for (const [key, element] of this.lineDetails.entries()) {
-      this.totalTareWeight += element.tareWeight;
-      this.totalGrossWeight += element.grossWeight;
+      this.totalTareWeight += (element.tareWeight ? element.tareWeight : 0);
+      this.totalGrossWeight += (element.grossWeight ? element.grossWeight : 0);
       this.docLineDetails += `<tr class="linedetails">
     <td class="tableitem"><p class="itemtext">${key + 1}</p></td>
-    <td class="tableitem"><p class="itemtext">${(element.tareWeight.toLocaleString('en-US'))}</p></td>
-    <td class="tableitem"><p class="itemtext">${(element.grossWeight.toLocaleString('en-US'))}</p></td>
+    <td class="tableitem"><p class="itemtext">${((element.tareWeight ? element.tareWeight.toLocaleString('en-US') : ''))}</p></td>
+    <td class="tableitem"><p class="itemtext">${((element.grossWeight ? element.grossWeight.toLocaleString('en-US') : ''))}</p></td>
     </tr>`;
     }
     this.docLineDetails += `<tr class="tabletitle">

@@ -38,8 +38,8 @@ export class SqliteDataService {
   readonly invoiceDetailsTable = `CREATE TABLE IF NOT EXISTS invoicedetails (
         id INTEGER PRIMARY KEY,
         invoice INTEGER NOT NULL,
-        tareweight REAL NOT NULL,
-        grossweight REAL NOT NULL,
+        tareweight REAL,
+        grossweight REAL,
         FOREIGN KEY(invoice) REFERENCES invoices(id))`;
 
   readonly insertAdminUser = `INSERT OR IGNORE INTO users (username, password, level)

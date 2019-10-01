@@ -129,13 +129,11 @@ export class BillingPage implements OnInit, AfterViewInit {
     }
     if (data.gross !== 0) {
       const indexGrossWeight = this.lineDetails.findIndex(x => x.grossWeight === 0);
-      console.log(indexGrossWeight);
       if (indexGrossWeight !== -1) {
         this.lineDetails[indexGrossWeight].grossWeight = data.gross;
         data.gross = 0;
       }
     }
-
     if (!(data.tare === 0 && data.gross === 0)) {
       this.lineDetails.push(
         {
