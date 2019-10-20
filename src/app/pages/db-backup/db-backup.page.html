@@ -1,0 +1,23 @@
+<app-toolbar [title]="'Respaldo DB'"></app-toolbar>
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row justify-content-center align-items-center>
+      <ion-col size="12">
+        <ion-button (click)="presentAlertExportConfirm()" color="tertiary" expand="block">
+          <ion-icon slot="start" name="cloud-upload"></ion-icon>
+          Realizar Copia de Seguridad
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center align-items-center>
+      <ion-col size="12">
+        <ion-button (click)="presentAlertImportConfirm()" color="danger" expand="block">
+          <ion-icon slot="start" name="logo-android"></ion-icon>
+          Restaurar Base de Datos
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

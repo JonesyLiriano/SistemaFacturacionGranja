@@ -38,8 +38,8 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'Copia de Seguridad',
-      url: '/dBUpdate',
-      icon: 'cloud-upload'
+      url: '/db-backup',
+      icon: 'cloud'
     },
     {
       title: 'Salir',

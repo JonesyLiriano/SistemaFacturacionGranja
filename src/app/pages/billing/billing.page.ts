@@ -1,14 +1,13 @@
+import { BluetoothSerialService } from './../../services/bluetooth-serial.service';
 import { Component, OnInit, LOCALE_ID, AfterViewInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { Customer } from '../../models/customer';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceDetails } from 'src/app/models/invoice-details';
-import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { InvoicesService } from 'src/app/services/invoices.service';
 import { CustomersService } from 'src/app/services/customers.service';
 import { Storage } from '@ionic/storage';
-import { PrintService } from 'src/app/services/print.service';
-import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -28,7 +27,7 @@ export class BillingPage implements OnInit, AfterViewInit {
   errorData: boolean;
   constructor(private alertController: AlertController, private invoiceService: InvoicesService,
               private customerService: CustomersService, private storage: Storage,
-              private printerService: PrintService, private toastService: ToastService,
+              private printerBluetoothService: BluetoothSerialService, private toastService: ToastService,
               private loadingController: LoadingController) {
   }
 
@@ -182,7 +181,7 @@ export class BillingPage implements OnInit, AfterViewInit {
   }
 
   printInvoice(invoice) {
-    this.printerService.print(invoice);
+    this.printerBluetoothService.bluetoothConnect(invoice);
   }
 
   complete() {

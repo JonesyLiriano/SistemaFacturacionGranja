@@ -12,6 +12,10 @@ import { SharedModule } from './shared/shared.module';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import { Printer } from '@ionic-native/printer/ngx';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { File } from '@ionic-native/file/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +32,9 @@ import { Printer } from '@ionic-native/printer/ngx';
     SplashScreen,
     SQLite,
     Printer,
+    BluetoothSerial,
+    SQLitePorter,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

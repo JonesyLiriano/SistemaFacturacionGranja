@@ -31,7 +31,7 @@ export class PrintService {
     <div class="info">
       <p><h2>Granja G & Y</h2>
       Azua</br>
-      Tel: 809-835-5817
+      Tel: 809-835-9817
       </p>
     </div>
   </center>`;
@@ -129,8 +129,8 @@ Tel: 809-222-3740
     this.docMiddle = `<div id="legalcopy" class="info">
     <p>Cantidad de pollos: ${this.invoice.lotProduct}</br>
     Precio por libra RD$: ${(this.invoice.pricePounds.toLocaleString('en-US'))}</br>
-    Promedio: ${(Math.abs(this.totalTareWeight -
-      this.totalGrossWeight / this.invoice.lotProduct).toFixed(6))}
+    Promedio: ${(Math.abs((this.totalTareWeight -
+      this.totalGrossWeight) / this.invoice.lotProduct).toFixed(6))}
     </p>
     </div>
     <div id="bot">

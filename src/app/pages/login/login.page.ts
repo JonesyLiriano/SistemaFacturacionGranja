@@ -35,9 +35,10 @@ export class LoginPage implements OnInit, OnDestroy {
   onSubmit() {
     this.loginService.confirmUser(this.user).then(response => {
       if (response) {
-        this.presentLoading('Cargando, por favor espere...');
-        this.menuCtrl.enable(true);
-        this.router.navigate(['/billing']);
+        this.presentLoading('Cargando, por favor espere...').then(() => {
+          this.menuCtrl.enable(true);
+          this.router.navigate(['/billing']);
+        });
       } else {
         this.user = {
           id: null,

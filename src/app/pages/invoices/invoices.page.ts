@@ -1,3 +1,4 @@
+import { BluetoothSerialService } from './../../services/bluetooth-serial.service';
 import { Component, OnInit } from '@angular/core';
 import { InvoiceDetailsModalPage } from '../invoice-details-modal/invoice-details-modal.page';
 import { Invoice } from 'src/app/models/invoice';
@@ -17,7 +18,8 @@ export class InvoicesPage implements OnInit {
   search;
 
   constructor(private modalController: ModalController, private alertController: AlertController,
-              private invoiceService: InvoicesService, private printerService: PrintService) {}
+              private invoiceService: InvoicesService, private printerService: PrintService,
+              private printerBluetoothService: BluetoothSerialService) {}
 
   ngOnInit() {
     this.loadInvoices();
@@ -37,8 +39,12 @@ export class InvoicesPage implements OnInit {
 
     await modal.present();
   }
-  printInvoice(invoice) {
+  saveInvoice(invoice) {
     this.printerService.print(invoice);
+  }
+
+  printInvoice(invoice) {
+    this.printerBluetoothService.bluetoothConnect(invoice);
   }
 
   onFilter(search: string) {

@@ -20,7 +20,10 @@
           <ion-item-option (click)="presentReadModal(invoice)" color="success">
             <ion-icon slot="icon-only" name="eye"></ion-icon>
           </ion-item-option>
-          <ion-item-option (click)="printInvoice(invoice)" color="medium">
+          <ion-item-option (click)="saveInvoice(invoice)" color="medium">
+            <ion-icon slot="icon-only" name="document"></ion-icon>
+          </ion-item-option>
+          <ion-item-option (click)="printInvoice(invoice)" color="primary">
             <ion-icon slot="icon-only" name="print"></ion-icon>
           </ion-item-option>
         </ion-item-options>

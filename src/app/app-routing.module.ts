@@ -1,3 +1,4 @@
+import { DbBackupPageModule } from './pages/db-backup/db-backup.module';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -27,10 +28,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/invoices-report/invoices-report.module').then(m => m.InvoicesReportPageModule)
   },
   {
+    path: 'db-backup',
+    loadChildren: () => import('./pages/db-backup/db-backup.module').then(m => m.DbBackupPageModule)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   }
+
+  
+
+
 ];
 
 @NgModule({
