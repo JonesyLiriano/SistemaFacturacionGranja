@@ -15,6 +15,11 @@ import { Printer } from '@ionic-native/printer/ngx';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { environment } from '../environments/environment';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 @NgModule({
@@ -25,7 +30,10 @@ import { File } from '@ionic-native/file/ngx';
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
-    SharedModule
+    SharedModule,    
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
     StatusBar,

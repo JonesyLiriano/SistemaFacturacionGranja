@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { Platform } from '@ionic/angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from './toast.service';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { File } from '@ionic-native/file/ngx';
+import {GooglePlus} from '@ionic-native/google-plus'
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +52,7 @@ export class SqliteDataService {
   databaseReady: BehaviorSubject<boolean>;
 
   constructor(private platform: Platform, private sqlite: SQLite, private toastService: ToastService,
-              private sqlitePorter: SQLitePorter, private file: File) {
+              private sqlitePorter: SQLitePorter, private file: File, private firebaseService: FirebaseService) {
     this.databaseReady = new BehaviorSubject(false);
     this.platform.ready().then(() => {
       this.createDB();
@@ -188,37 +190,26 @@ public condicionalQuery(query, values) {
 
 public exportDBtoSQL() {
   return this.sqlitePorter.exportDbToSql(this.database._objectInstance).then((data) => {
-    return this.createSqlFile(data);   
+    return this.firebaseService.uploadScriptBackUp(data);
   }, err => {
     alert(err);
-    return this.toastService.presentErrorToast('Ha ocurrido un error creando el respaldo de la base de datos');
+    this.toastService.presentErrorToast('Ha ocurrido un error creando el respaldo de la base de datos');
   })
 }
 
 private populateDB(data: string) {
-  return this.sqlitePorter.importSqlToDb(this.database.__objectInstance, data).then(() => {
-    return this.toastService.presentSuccessToast('La base de datos ha sido restaurada.');
+  return this.sqlitePorter.importSqlToDb(this.database._objectInstance, data).then(() => {
+    this.toastService.presentSuccessToast('La base de datos ha sido restaurada.');
   }, err => {
-    return this.toastService.presentErrorToast('Ha ocurrido un error restaurando la base de datos');
-  });
-}
-
-private createSqlFile(data: string) {
-  return this.platform.ready().then(() => {
-   
-      return this.file.writeFile(this.file.cacheDirectory, 'ScriptBackup.txt', data).then(() => {
-        this.toastService.presentSuccessToast('Respaldo de la base de datos realizado.');
-      }, err => {
-        this.toastService.presentErrorToast('Error escribiendo backup');
-  })
+    alert(err);
+    this.toastService.presentErrorToast('Ha ocurrido un error restaurando la base de datos');
   });
 }
 
 public importSQLtoDB() {
   return this.platform.ready().then(() => {
-      return this.file.readAsText(this.file.cacheDirectory, 'ScriptBackup.txt' ).then((data) => {
-        alert(data);
-        return this.populateDB(data);
+      return this.file.readAsText(this.file.externalDataDirectory, 'ScriptBackupY&G.txt' ).then((data) => {
+        this.populateDB(data);
       }, err => {
         alert(err);
         this.toastService.presentErrorToast('Ha ocurrido un error leyendo el respaldo de la base de datos.');
