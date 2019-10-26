@@ -20,6 +20,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BluetoothSerial,
     SQLitePorter,
     File,
+    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

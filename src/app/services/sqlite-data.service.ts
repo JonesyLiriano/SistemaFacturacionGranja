@@ -5,8 +5,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from './toast.service';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { File } from '@ionic-native/file/ngx';
-import {GooglePlus} from '@ionic-native/google-plus'
 import { FirebaseService } from './firebase.service';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -50,9 +50,11 @@ export class SqliteDataService {
         VALUES ('Admin', 'admin', 'admin')`;
 
   databaseReady: BehaviorSubject<boolean>;
+  
 
   constructor(private platform: Platform, private sqlite: SQLite, private toastService: ToastService,
-              private sqlitePorter: SQLitePorter, private file: File, private firebaseService: FirebaseService) {
+              private sqlitePorter: SQLitePorter, private file: File, private firebaseService: FirebaseService,
+              private transfer: FileTransfer) {
     this.databaseReady = new BehaviorSubject(false);
     this.platform.ready().then(() => {
       this.createDB();
@@ -208,12 +210,20 @@ private populateDB(data: string) {
 
 public importSQLtoDB() {
   return this.platform.ready().then(() => {
-      return this.file.readAsText(this.file.externalDataDirectory, 'ScriptBackupY&G.txt' ).then((data) => {
-        this.populateDB(data);
-      }, err => {
-        alert(err);
-        this.toastService.presentErrorToast('Ha ocurrido un error leyendo el respaldo de la base de datos.');
-      });      
-    });
+    return this.firebaseService.downloadScriptBackUp().then(url => {
+      const fileTransfer: FileTransferObject = this.transfer.create();
+      return fileTransfer.download(url, this.file.externalDataDirectory + 'ScriptBackupY&G.txt').then((entry) => {
+        return this.file.readAsText(this.file.externalDataDirectory, 'ScriptBackupY&G.txt' ).then((data) => {
+          this.populateDB(data);
+        }, err => {
+          alert(err);
+          this.toastService.presentErrorToast('Ha ocurrido un error leyendo el respaldo de la base de datos.');
+        });      
+      });
+      }, (error) => {
+        alert(error);
+      });
+    })
+      
 }
 }
