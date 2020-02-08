@@ -1,11 +1,8 @@
-<ion-header translucent>
-  <ion-toolbar>
-    <ion-title>Informacion del Cliente</ion-title>
+<app-toolbar [title]="'Informacion Cliente'">
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Cerrar</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+    <ion-button (click)="dismissModal()">Cerrar</ion-button>
+  </ion-buttons>
+  </app-toolbar>
 <ion-content>
   <form #formCustomer="ngForm" (ngSubmit)="onClickSubmit()">
     <ion-grid>
